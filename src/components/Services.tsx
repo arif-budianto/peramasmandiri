@@ -1,17 +1,19 @@
 import { Tent, Tractor, Wifi } from 'lucide-react';
+import Tenda from '../img/Tenda.jpeg'
+import Combine from '../img/combine.jpeg'
 
 const services = [
   {
     icon: <Tent className="h-12 w-12 text-green-600 dark:text-green-500" />,
     title: 'Penyewaan Tenda & Kursi',
     description: 'Solusi lengkap untuk berbagai acara Anda. Tersedia berbagai ukuran tenda dan kursi berkualitas.',
-    image: '../src/img/Tenda.jpeg'
+    image: Tenda
   },
   {
     icon: <Tractor className="h-12 w-12 text-green-600 dark:text-green-500" />,
     title: 'Penyewaan Combine Harvester',
     description: 'Tingkatkan efisiensi panen dengan mesin pemanen modern dan operator berpengalaman.',
-    image: '../src/img/combine.jpeg'
+    image: Combine
   },
   {
     icon: <Wifi className="h-12 w-12 text-green-600 dark:text-green-500" />,
