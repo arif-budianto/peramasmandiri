@@ -1,3 +1,5 @@
+import VisitorCounter from './VisitorCounter';
+
 const Hero = () => {
   return (
     <div id="beranda" className="pt-16">
@@ -11,8 +13,8 @@ const Hero = () => {
           <div className="absolute inset-0 bg-black opacity-50"></div>
         </div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
-          <div className="flex items-center h-full">
-            <div className="text-white">
+          <div className="flex flex-col justify-center h-full">
+            <div className="text-white mb-8">
               <h1 className="text-4xl md:text-6xl font-bold mb-4">
                 BUMDesa Peramas Mandiri
               </h1>
@@ -26,6 +28,7 @@ const Hero = () => {
                 Lihat Layanan Kami
               </a>
             </div>
+            <VisitorCounter /> 
           </div>
         </div>
       </div>
