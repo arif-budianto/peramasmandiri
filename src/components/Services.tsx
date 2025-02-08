@@ -20,7 +20,7 @@ const services: ServiceType[] = [
     icon: <Tent className="h-12 w-12 text-green-600 dark:text-green-500" />,
     title: 'Penyewaan Tenda & Kursi',
     description: 'Solusi lengkap untuk berbagai acara Anda. Tersedia berbagai ukuran tenda dan kursi berkualitas.',
-    image: './img/Tenda.jpeg',
+    image: '../img/Tenda.jpeg',
     gallery: [
       { type: 'image', url: '/src/img/Tenda.jpeg', caption: 'Kursi Pernikahan' },
       { type: 'image', url: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80', caption: 'Setup Kursi Event' }
