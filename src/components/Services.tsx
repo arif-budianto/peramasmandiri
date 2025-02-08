@@ -74,7 +74,7 @@ const services: ServiceType[] = [
       },
       {
         type: "video",
-        url: "https://i.imgur.com/EsfR8qk.mp4",
+        url: "https://res.cloudinary.com/dqrmu87hd/video/upload/v1739012460/iq7zngab85cpizwm0ssc.mp4",
         caption: "Demonstrasi Penggunaan Traktor",
       },
     ],
