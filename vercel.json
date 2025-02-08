@@ -1,0 +1,8 @@
+{
+    "functions": {
+      "api/visitors.ts": {
+        "runtime": "edge",
+        "memory": 128
+      }
+    }
+  }
