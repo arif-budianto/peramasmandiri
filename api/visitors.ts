@@ -1,4 +1,5 @@
-import { kv } from '@vercel/kv';
+import { NextResponse } from 'next/server';
+import { get } from '@vercel/edge-config';
 
 export const config = {
   runtime: 'edge',
@@ -10,35 +11,27 @@ export default async function handler(request: Request) {
 
   if (request.method === 'GET') {
     try {
-      // Get current count
-      let count = await kv.get(key) || 0;
+      // Get current count from Edge Config
+      let count = (await get(key)) || 0;
+      count = Number(count) + 1;
       
-      // Increment count for new visit
-      await kv.incr(key);
-      
-      // Set expiry for 24 hours from now
-      await kv.expire(key, 24 * 60 * 60);
-      
-      return new Response(JSON.stringify({ count }), {
+      return NextResponse.json({ count }, {
         status: 200,
         headers: {
-          'Content-Type': 'application/json',
+          'Cache-Control': 'no-store, must-revalidate',
         },
       });
     } catch (error) {
-      return new Response(JSON.stringify({ error: 'Failed to fetch visitor count' }), {
-        status: 500,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      console.error('Edge Config error:', error);
+      return NextResponse.json(
+        { error: 'Failed to fetch visitor count' },
+        { status: 500 }
+      );
     }
   }
 
-  return new Response(JSON.stringify({ error: 'Method not allowed' }), {
-    status: 405,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
+  return NextResponse.json(
+    { error: 'Method not allowed' },
+    { status: 405 }
+  );
 }
