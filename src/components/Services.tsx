@@ -20,9 +20,9 @@ const services: ServiceType[] = [
     icon: <Tent className="h-12 w-12 text-green-600 dark:text-green-500" />,
     title: 'Penyewaan Tenda & Kursi',
     description: 'Solusi lengkap untuk berbagai acara Anda. Tersedia berbagai ukuran tenda dan kursi berkualitas.',
-    image: 'https://drive.google.com/uc?export=download&id=1c4-fGN9o5j4zyL1uuE1ASyB65bsQS3uf',
+    image: 'https://i.imgur.com/HufyYRj.jpg',
     gallery: [
-      { type: 'image', url: 'https://drive.google.com/uc?export=download&id=1c4-fGN9o5j4zyL1uuE1ASyB65bsQS3uf', caption: 'Kursi Pernikahan' },
+      { type: 'image', url: 'https://i.imgur.com/HufyYRj.jpg', caption: 'Kursi Pernikahan' },
       { type: 'image', url: 'https://images.unsplash.com/photo-1519167758481-83f550bb49b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80', caption: 'Setup Kursi Event' }
     ]
   },
@@ -30,10 +30,10 @@ const services: ServiceType[] = [
     icon: <Tractor className="h-12 w-12 text-green-600 dark:text-yellow-500" />,
     title: 'Penyewaan Combine Harvester',
     description: 'Membantu petani dengan alat pertanian modern dan efisien untuk meningkatkan hasil panen.',
-    image: '/src/img/combine.jpeg',
+    image: 'https://i.imgur.com/TQ3XxyQ.jpg',
     gallery: [
-      { type: 'image', url: '/src/img/combine.jpeg', caption: 'Traktor di Ladang' },
-      { type: 'video', url: 'https://drive.google.com/file/d/1JGYlZixZwJ3IO706idu5Ydd6Xfqspm5N/view?usp=sharing', caption: 'Demonstrasi Penggunaan Traktor' }
+      { type: 'image', url: 'https://i.imgur.com/TQ3XxyQ.jpg', caption: 'Traktor di Ladang' },
+      { type: 'video', url: 'https://i.imgur.com/PlbMMa5.mp4', caption: 'Demonstrasi Penggunaan Traktor' }
     ]
   },
   {
