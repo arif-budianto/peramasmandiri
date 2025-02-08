@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Tent, Tractor, Wifi, X } from "lucide-react";
 
 type GalleryItem = {
@@ -115,8 +115,14 @@ type GalleryProps = {
 const Gallery: React.FC<GalleryProps> = ({ isOpen, onClose, service }) => {
   const [activeIndex, setActiveIndex] = useState<number>(0);
 
+  useEffect(() => {
+    if (service && activeIndex >= service.gallery.length) {
+      setActiveIndex(0); // Reset index jika out of range
+    }
+  }, [activeIndex, service]);
+
   if (!isOpen || !service) return null;
-  const activeItem = service.gallery[activeIndex];
+  const activeItem = service.gallery[activeIndex] || service.gallery[0];
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-75">
@@ -141,10 +147,10 @@ const Gallery: React.FC<GalleryProps> = ({ isOpen, onClose, service }) => {
                 className="w-full h-full object-contain"
               />
             ) : (
-              <iframe
+              <video
                 src={activeItem.url}
+                controls
                 className="w-full h-full"
-                allowFullScreen
               />
             )}
           </div>
