@@ -1,5 +1,3 @@
-import VisitorCounter from './VisitorCounter';
-
 const Hero = () => {
   return (
     <div id="beranda" className="pt-16">
@@ -28,7 +26,6 @@ const Hero = () => {
                 Lihat Layanan Kami
               </a>
             </div>
-            <VisitorCounter /> 
           </div>
         </div>
       </div>
