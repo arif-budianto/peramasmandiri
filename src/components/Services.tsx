@@ -75,7 +75,12 @@ const services: ServiceType[] = [
       {
         type: "video",
         url: "https://res.cloudinary.com/dqrmu87hd/video/upload/v1739012460/iq7zngab85cpizwm0ssc.mp4",
-        caption: "Demonstrasi Penggunaan Traktor",
+        caption: "Demonstrasi Penggunaan Traktor 1",
+      },
+      {
+        type: "video",
+        url: "https://res.cloudinary.com/dqrmu87hd/video/upload/v1739012876/WhatsApp_Video_2025-02-07_at_13.12.36_nleao4.mp4",
+        caption: "Demonstrasi Penggunaan Traktor 2",
       },
     ],
   },
