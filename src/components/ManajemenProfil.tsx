@@ -103,54 +103,60 @@ const ManajemenProfil = () => {
         </div>
 
         {/* Dokumen */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
-          <div className="col-span-1 text-center">
-            <h3>SK BUMDesa</h3>
-            <img src="https://i.imgur.com/b8CcGDj.png" alt="Cover SK BUMDesa" className="w-32 h-40 mx-auto mb-2" />
-            <a href="/path/to/sk-bumdesa.pdf" className="text-blue-500">Lihat Dokumen</a>
-          </div>
-          <div className="col-span-1 text-center">
-            <h3>AD dan ART</h3>
-            <img src="https://i.imgur.com/ysXbDPs.png" alt="Cover Anggaran Dasar" className="w-32 h-40 mx-auto mb-2" />
-            <a href="/path/to/anggaran-dasar.pdf" className="text-blue-500">Lihat Dokumen</a>
-          </div>
-          <div className="col-span-1 text-center">
-            <h3>Akta Pendirian</h3>
-            <img src="https://i.imgur.com/AaPv8W7.png" alt="Cover Akta Pendirian" className="w-32 h-40 mx-auto mb-2" />
-            <a href="/path/to/akta-pendirian.pdf" className="text-blue-500">Lihat Dokumen</a>
-          </div>
-          <div className="col-span-1 text-center">
-            <h3>AHU</h3>
-            <img src="https://i.imgur.com/0UKtkjn.png" alt="Cover AHU" className="w-32 h-40 mx-auto mb-2" />
-            <a href="/path/to/ahu.pdf" className="text-blue-500">Lihat Dokumen</a>
-          </div>
-          <div className="col-span-1 text-center">
-            <h3>NIB</h3>
-            <img src="https://i.imgur.com/L3qvJYx.png" alt="Cover NIB" className="w-32 h-40 mx-auto mb-2" />
-            <a href="/path/to/nib.pdf" className="text-blue-500">Lihat Dokumen</a>
+        <div className="mb-16">
+          <h2 className="text-2xl font-bold mb-4 text-center">Dokumen BUMDesa</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
+            <div className="col-span-1 text-center">
+              <h3>SK BUMDesa</h3>
+              <img src="https://i.imgur.com/b8CcGDj.png" alt="Cover SK BUMDesa" className="w-32 h-40 mx-auto mb-2" />
+              <a href="/path/to/sk-bumdesa.pdf" className="text-blue-500">Lihat Dokumen</a>
+            </div>
+            <div className="col-span-1 text-center">
+              <h3>AD dan ART</h3>
+              <img src="https://i.imgur.com/ysXbDPs.png" alt="Cover Anggaran Dasar" className="w-32 h-40 mx-auto mb-2" />
+              <a href="/path/to/anggaran-dasar.pdf" className="text-blue-500">Lihat Dokumen</a>
+            </div>
+            <div className="col-span-1 text-center">
+              <h3>Akta Pendirian</h3>
+              <img src="https://i.imgur.com/AaPv8W7.png" alt="Cover Akta Pendirian" className="w-32 h-40 mx-auto mb-2" />
+              <a href="/path/to/akta-pendirian.pdf" className="text-blue-500">Lihat Dokumen</a>
+            </div>
+            <div className="col-span-1 text-center">
+              <h3>AHU</h3>
+              <img src="https://i.imgur.com/0UKtkjn.png" alt="Cover AHU" className="w-32 h-40 mx-auto mb-2" />
+              <a href="/path/to/ahu.pdf" className="text-blue-500">Lihat Dokumen</a>
+            </div>
+            <div className="col-span-1 text-center">
+              <h3>NIB</h3>
+              <img src="https://i.imgur.com/L3qvJYx.png" alt="Cover NIB" className="w-32 h-40 mx-auto mb-2" />
+              <a href="/path/to/nib.pdf" className="text-blue-500">Lihat Dokumen</a>
+            </div>
           </div>
         </div>
 
         {/* Pengurus */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {pengurusList.map((pengurus, index) => (
-            <div
-              key={index}
-              className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg text-center"
-            >
-              <img
-                src={pengurus.foto}
-                alt={pengurus.nama}
-                className="w-32 h-32 rounded-full mx-auto mb-4 object-cover pt-0"
-              />
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                {pengurus.nama}
-              </h3>
-              <p className="text-gray-600 dark:text-gray-300">
-                {pengurus.jabatan}
-              </p>
-            </div>
-          ))}
+        <div className="mb-8">
+          <h2 className="text-2xl font-bold mb-4 text-center">Pengurus BUMDesa</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {pengurusList.map((pengurus, index) => (
+              <div
+                key={index}
+                className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg text-center"
+              >
+                <img
+                  src={pengurus.foto}
+                  alt={pengurus.nama}
+                  className="w-32 h-32 rounded-full mx-auto mb-4 object-cover pt-0"
+                />
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                  {pengurus.nama}
+                </h3>
+                <p className="text-gray-600 dark:text-gray-300">
+                  {pengurus.jabatan}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
