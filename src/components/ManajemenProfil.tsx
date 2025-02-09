@@ -109,22 +109,22 @@ const ManajemenProfil = () => {
             <div className="col-span-1 text-center">
               <h3>SK BUMDesa</h3>
               <img src="https://i.imgur.com/b8CcGDj.png" alt="Cover SK BUMDesa" className="w-32 h-40 mx-auto mb-2" />
-              <a href="/path/to/sk-bumdesa.pdf" className="text-blue-500">Lihat Dokumen</a>
+              <a href="https://cciikicxagltholyagoj.supabase.co/storage/v1/object/public/media//SK%20Pengurus%20Bumdes.pdf" className="text-blue-500">Lihat Dokumen</a>
             </div>
             <div className="col-span-1 text-center">
               <h3>AD dan ART</h3>
               <img src="https://i.imgur.com/ysXbDPs.png" alt="Cover Anggaran Dasar" className="w-32 h-40 mx-auto mb-2" />
-              <a href="/path/to/anggaran-dasar.pdf" className="text-blue-500">Lihat Dokumen</a>
+              <a href="https://cciikicxagltholyagoj.supabase.co/storage/v1/object/public/media//AD%20dan%20ART%20Peramas%20Mandiri.pdf" className="text-blue-500">Lihat Dokumen</a>
             </div>
             <div className="col-span-1 text-center">
               <h3>Akta Pendirian</h3>
               <img src="https://i.imgur.com/AaPv8W7.png" alt="Cover Akta Pendirian" className="w-32 h-40 mx-auto mb-2" />
-              <a href="/path/to/akta-pendirian.pdf" className="text-blue-500">Lihat Dokumen</a>
+              <a href="https://cciikicxagltholyagoj.supabase.co/storage/v1/object/public/media//Akta%20Notaris.pdf" className="text-blue-500">Lihat Dokumen</a>
             </div>
             <div className="col-span-1 text-center">
               <h3>AHU</h3>
               <img src="https://i.imgur.com/0UKtkjn.png" alt="Cover AHU" className="w-32 h-40 mx-auto mb-2" />
-              <a href="/path/to/ahu.pdf" className="text-blue-500">Lihat Dokumen</a>
+              <a href="https://cciikicxagltholyagoj.supabase.co/storage/v1/object/public/media//AHU.pdf" className="text-blue-500">Lihat Dokumen</a>
             </div>
             <div className="col-span-1 text-center">
               <h3>NIB</h3>
