@@ -6,7 +6,6 @@ import Footer from './components/Footer';
 import ManajemenProfil from './components/ManajemenProfil';
 import KatalogLayanan from './components/KatalogLayanan';
 import BeritaPengumuman from './components/BeritaPengumuman';
-import LaporanKeuangan from './components/LaporanKeuangan';
 import { Analytics } from "@vercel/analytics/react"
 
 function App() {
@@ -18,7 +17,6 @@ function App() {
       <KatalogLayanan />
       <GalleryKegiatan />
       <BeritaPengumuman />
-      <LaporanKeuangan />
       <Contact />
       <Analytics />
       <Footer />

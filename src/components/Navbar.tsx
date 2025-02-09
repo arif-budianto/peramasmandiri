@@ -35,7 +35,6 @@ const Navbar = () => {
             <a href="#katalog" onClick={(e) => scrollToSection(e, 'katalog')} className="text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-500">Katalog</a>
             <a href="#layanan" onClick={(e) => scrollToSection(e, 'layanan')} className="text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-500">Gallery</a>
             <a href="#berita" onClick={(e) => scrollToSection(e, 'berita')} className="text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-500">Berita</a>
-            <a href="#laporan" onClick={(e) => scrollToSection(e, 'laporan')} className="text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-500">Laporan</a>
             <a href="#kontak" onClick={(e) => scrollToSection(e, 'kontak')} className="text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-500">Kontak</a>
             <button
               onClick={toggleDarkMode}
@@ -77,7 +76,6 @@ const Navbar = () => {
             <a href="#katalog" onClick={(e) => { scrollToSection(e, 'katalog'); setIsOpen(false); }} className="text-gray-600 dark:text-gray-300">Katalog</a>
             <a href="#layanan" onClick={(e) => { scrollToSection(e, 'layanan'); setIsOpen(false); }} className="text-gray-600 dark:text-gray-300">Gallery</a>
             <a href="#berita" onClick={(e) => { scrollToSection(e, 'berita'); setIsOpen(false); }} className="text-gray-600 dark:text-gray-300">Berita</a>
-            <a href="#laporan" onClick={(e) => { scrollToSection(e, 'laporan'); setIsOpen(false); }} className="text-gray-600 dark:text-gray-300">Laporan</a>
             <a href="#kontak" onClick={(e) => { scrollToSection(e, 'kontak'); setIsOpen(false); }} className="text-gray-600 dark:text-gray-300">Kontak</a>
           </div>
         </div>
