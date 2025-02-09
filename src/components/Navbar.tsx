@@ -31,7 +31,11 @@ const Navbar = () => {
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
             <a href="#beranda" onClick={(e) => scrollToSection(e, 'beranda')} className="text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-500">Beranda</a>
-            <a href="#layanan" onClick={(e) => scrollToSection(e, 'layanan')} className="text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-500">Layanan</a>
+            <a href="#profil" onClick={(e) => scrollToSection(e, 'profil')} className="text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-500">Profil</a>
+            <a href="#katalog" onClick={(e) => scrollToSection(e, 'katalog')} className="text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-500">Katalog</a>
+            <a href="#layanan" onClick={(e) => scrollToSection(e, 'layanan')} className="text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-500">Gallery</a>
+            <a href="#berita" onClick={(e) => scrollToSection(e, 'berita')} className="text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-500">Berita</a>
+            <a href="#laporan" onClick={(e) => scrollToSection(e, 'laporan')} className="text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-500">Laporan</a>
             <a href="#tentang" onClick={(e) => scrollToSection(e, 'tentang')} className="text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-500">Tentang</a>
             <a href="#kontak" onClick={(e) => scrollToSection(e, 'kontak')} className="text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-500">Kontak</a>
             <button
@@ -61,16 +65,25 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Menu */}
-      {isOpen && (
-        <div className="md:hidden">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white dark:bg-gray-800">
-            <a href="#beranda" onClick={(e) => { scrollToSection(e, 'beranda'); setIsOpen(false); }} className="block px-3 py-2 text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-500">Beranda</a>
-            <a href="#layanan" onClick={(e) => { scrollToSection(e, 'layanan'); setIsOpen(false); }} className="block px-3 py-2 text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-500">Layanan</a>
-            <a href="#tentang" onClick={(e) => { scrollToSection(e, 'tentang'); setIsOpen(false); }} className="block px-3 py-2 text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-500">Tentang</a>
-            <a href="#kontak" onClick={(e) => { scrollToSection(e, 'kontak'); setIsOpen(false); }} className="block px-3 py-2 text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-500">Kontak</a>
+      <div className={`md:hidden fixed inset-0 bg-gray-800 bg-opacity-50 ${isOpen ? 'block' : 'hidden'}`}>
+        <div className="bg-white dark:bg-gray-800 h-screen w-screen p-4 bg-opacity-60 backdrop-blur-lg">
+          <div className="flex justify-end">
+            <button onClick={() => setIsOpen(false)} className="text-gray-600 dark:text-gray-300">
+              <X className="h-6 w-6" />
+            </button>
+          </div>
+          <div className="flex flex-col space-y-8 mt-8 text-center font-bold">
+            <a href="#beranda" onClick={(e) => { scrollToSection(e, 'beranda'); setIsOpen(false); }} className="text-gray-600 dark:text-gray-300">Beranda</a>
+            <a href="#profil" onClick={(e) => { scrollToSection(e, 'profil'); setIsOpen(false); }} className="text-gray-600 dark:text-gray-300">Profil</a>
+            <a href="#katalog" onClick={(e) => { scrollToSection(e, 'katalog'); setIsOpen(false); }} className="text-gray-600 dark:text-gray-300">Katalog</a>
+            <a href="#layanan" onClick={(e) => { scrollToSection(e, 'layanan'); setIsOpen(false); }} className="text-gray-600 dark:text-gray-300">Gallery</a>
+            <a href="#berita" onClick={(e) => { scrollToSection(e, 'berita'); setIsOpen(false); }} className="text-gray-600 dark:text-gray-300">Berita</a>
+            <a href="#laporan" onClick={(e) => { scrollToSection(e, 'laporan'); setIsOpen(false); }} className="text-gray-600 dark:text-gray-300">Laporan</a>
+            <a href="#tentang" onClick={(e) => { scrollToSection(e, 'tentang'); setIsOpen(false); }} className="text-gray-600 dark:text-gray-300">Tentang</a>
+            <a href="#kontak" onClick={(e) => { scrollToSection(e, 'kontak'); setIsOpen(false); }} className="text-gray-600 dark:text-gray-300">Kontak</a>
           </div>
         </div>
-      )}
+      </div>
     </nav>
   );
 };
