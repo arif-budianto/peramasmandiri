@@ -25,7 +25,7 @@ const pengurusList: PengurusProps[] = [
   {
     nama: "ARIFBUDIANTO",
     jabatan: "IT",
-    foto: "https://i.imgur.com/A6ySHtf.png",
+    foto: "https://i.imgur.com/3Vw0mhp.jpg",
   },
 ];
 
