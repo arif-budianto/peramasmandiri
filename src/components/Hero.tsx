@@ -1,7 +1,7 @@
 const Hero = () => {
   return (
     <div id="beranda" className="pt-16">
-      <div className="relative h-[600px]">
+      <div className="relative h-screen">
         <div className="absolute inset-0">
           <img
             src="https://images.pexels.com/photos/2131650/pexels-photo-2131650.jpeg"
