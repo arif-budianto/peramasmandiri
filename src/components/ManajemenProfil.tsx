@@ -104,30 +104,30 @@ const ManajemenProfil = () => {
 
         {/* Dokumen */}
         <div className="mb-16">
-          <h2 className="text-2xl font-bold mb-4 text-center">Dokumen BUMDesa</h2>
+          <h2 className="text-2xl font-bold mb-4 text-center text-gray-900 dark:text-white">Dokumen BUMDesa</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
             <div className="col-span-1 text-center">
-              <h3>SK BUMDesa</h3>
+              <h3 className="text-gray-900 dark:text-white">SK BUMDesa</h3>
               <img src="https://i.imgur.com/b8CcGDj.png" alt="Cover SK BUMDesa" className="w-32 h-40 mx-auto mb-2" />
               <a href="https://cciikicxagltholyagoj.supabase.co/storage/v1/object/public/media//SK%20Pengurus%20Bumdes.pdf" className="text-blue-500">Lihat Dokumen</a>
             </div>
             <div className="col-span-1 text-center">
-              <h3>AD dan ART</h3>
+              <h3 className="text-gray-900 dark:text-white">AD dan ART</h3>
               <img src="https://i.imgur.com/ysXbDPs.png" alt="Cover Anggaran Dasar" className="w-32 h-40 mx-auto mb-2" />
               <a href="https://cciikicxagltholyagoj.supabase.co/storage/v1/object/public/media//AD%20dan%20ART%20Peramas%20Mandiri.pdf" className="text-blue-500">Lihat Dokumen</a>
             </div>
             <div className="col-span-1 text-center">
-              <h3>Akta Pendirian</h3>
+              <h3 className="text-gray-900 dark:text-white">Akta Pendirian</h3>
               <img src="https://i.imgur.com/AaPv8W7.png" alt="Cover Akta Pendirian" className="w-32 h-40 mx-auto mb-2" />
               <a href="https://cciikicxagltholyagoj.supabase.co/storage/v1/object/public/media//Akta%20Notaris.pdf" className="text-blue-500">Lihat Dokumen</a>
             </div>
             <div className="col-span-1 text-center">
-              <h3>AHU</h3>
+              <h3 className="text-gray-900 dark:text-white">AHU</h3>
               <img src="https://i.imgur.com/0UKtkjn.png" alt="Cover AHU" className="w-32 h-40 mx-auto mb-2" />
               <a href="https://cciikicxagltholyagoj.supabase.co/storage/v1/object/public/media//AHU.pdf" className="text-blue-500">Lihat Dokumen</a>
             </div>
             <div className="col-span-1 text-center">
-              <h3>NIB</h3>
+              <h3 className="text-gray-900 dark:text-white">NIB</h3>
               <img src="https://i.imgur.com/L3qvJYx.png" alt="Cover NIB" className="w-32 h-40 mx-auto mb-2" />
               <a href="/path/to/nib.pdf" className="text-blue-500">Lihat Dokumen</a>
             </div>
@@ -136,7 +136,7 @@ const ManajemenProfil = () => {
 
         {/* Pengurus */}
         <div className="mb-8">
-          <h2 className="text-2xl font-bold mb-4 text-center">Pengurus BUMDesa</h2>
+          <h2 className="text-2xl font-bold mb-4 text-center text-gray-900 dark:text-white">Pengurus BUMDesa</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {pengurusList.map((pengurus, index) => (
               <div
