@@ -25,7 +25,7 @@ const pengurusList: PengurusProps[] = [
   {
     nama: "ARIFBUDIANTO",
     jabatan: "IT",
-    foto: "https://i.imgur.com/3Vw0mhp.jpg",
+    foto: "https://i.imgur.com/eLmCYJz.jpg",
   },
 ];
 
@@ -43,7 +43,7 @@ const ManajemenProfil = () => {
         </div>
 
         {/* Visi Misi */}
-        <div className="grid grid-cols-1 gap-8 mb-16">
+        <div className="grid grid-cols-1 gap-8 mb-12">
           <div className="bg-gray-50 dark:bg-gray-800 p-8 rounded-lg">
             <div style={{ display: "flex", flexDirection: "column" }}>
               <div className="flex items-center mb-4">
@@ -95,10 +95,39 @@ const ManajemenProfil = () => {
                   Tujuan
                 </h2>
               </div>
-              <p className="text-gray-600 dark:text-gray-300 mb-8">
+              <p className="text-gray-600 dark:text-gray-300">
               Meningkatkan kesejahteraan masyarakat desa melalui pengembangan usaha dan layanan berkualitas
               </p>
             </div>
+          </div>
+        </div>
+
+        {/* Dokumen */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
+          <div className="col-span-1 text-center">
+            <h3>SK BUMDesa</h3>
+            <img src="https://i.imgur.com/b8CcGDj.png" alt="Cover SK BUMDesa" className="w-32 h-40 mx-auto mb-2" />
+            <a href="/path/to/sk-bumdesa.pdf" className="text-blue-500">Lihat Dokumen</a>
+          </div>
+          <div className="col-span-1 text-center">
+            <h3>AD dan ART</h3>
+            <img src="https://i.imgur.com/ysXbDPs.png" alt="Cover Anggaran Dasar" className="w-32 h-40 mx-auto mb-2" />
+            <a href="/path/to/anggaran-dasar.pdf" className="text-blue-500">Lihat Dokumen</a>
+          </div>
+          <div className="col-span-1 text-center">
+            <h3>Akta Pendirian</h3>
+            <img src="https://i.imgur.com/AaPv8W7.png" alt="Cover Akta Pendirian" className="w-32 h-40 mx-auto mb-2" />
+            <a href="/path/to/akta-pendirian.pdf" className="text-blue-500">Lihat Dokumen</a>
+          </div>
+          <div className="col-span-1 text-center">
+            <h3>AHU</h3>
+            <img src="https://i.imgur.com/0UKtkjn.png" alt="Cover AHU" className="w-32 h-40 mx-auto mb-2" />
+            <a href="/path/to/ahu.pdf" className="text-blue-500">Lihat Dokumen</a>
+          </div>
+          <div className="col-span-1 text-center">
+            <h3>NIB</h3>
+            <img src="https://i.imgur.com/L3qvJYx.png" alt="Cover NIB" className="w-32 h-40 mx-auto mb-2" />
+            <a href="/path/to/nib.pdf" className="text-blue-500">Lihat Dokumen</a>
           </div>
         </div>
 
