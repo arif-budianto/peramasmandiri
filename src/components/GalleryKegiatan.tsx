@@ -121,12 +121,37 @@ const Gallery: React.FC<GalleryProps> = ({ isOpen, onClose, service }) => {
     }
   }, [activeIndex, service]);
 
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
+
+    const handleClickOutside = (event: MouseEvent) => {
+      const modalContent = document.querySelector('.modal-content');
+      const target = event.target as Element;
+      
+      if (isOpen && modalContent && !modalContent.contains(target) && target.classList.contains('modal-backdrop')) {
+        onClose();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen, onClose]);
+
   if (!isOpen || !service) return null;
   const activeItem = service.gallery[activeIndex] || service.gallery[0];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-75">
-      <div className="relative w-full max-w-6xl bg-white dark:bg-gray-800 rounded-lg shadow-xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-75 modal-backdrop">
+      <div className="relative w-full max-w-6xl bg-white dark:bg-gray-800 rounded-lg shadow-xl modal-content">
         <button
           onClick={onClose}
           className="absolute right-4 top-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
