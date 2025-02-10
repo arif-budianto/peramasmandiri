@@ -4,28 +4,31 @@ import { useScrollToSection } from '../hooks/useScrollToSection';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
   const scrollToSection = useScrollToSection();
 
-  useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  }, [darkMode]);
-
   const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
+    const currentMode = localStorage.getItem('theme');
+    const newMode = currentMode === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('theme', newMode);
+    document.documentElement.classList.toggle('dark', newMode === 'dark');
   };
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) {
+      document.documentElement.classList.toggle('dark', savedTheme === 'dark');
+    }
+  }, []);
 
   return (
     <nav className="bg-white dark:bg-gray-800 shadow-md fixed w-full z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex items-center">
-            <Building2 className="h-8 w-8 text-green-600 dark:text-green-500" />
-            <span className="ml-2 text-xl font-bold text-gray-800 dark:text-white">BUMDesa Peramas Mandiri</span>
+            <a href="/" className="flex items-center text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-500">
+              <Building2 className="h-8 w-8 text-green-600 dark:text-green-500" />
+              <span className="ml-2 text-xl font-bold text-gray-800 dark:text-white">BUMDesa Peramas Mandiri</span>
+            </a>
           </div>
           
           {/* Desktop Menu */}
@@ -40,7 +43,7 @@ const Navbar = () => {
               onClick={toggleDarkMode}
               className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
             >
-              {darkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+              {localStorage.getItem('theme') === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
             </button>
           </div>
 
@@ -50,7 +53,7 @@ const Navbar = () => {
               onClick={toggleDarkMode}
               className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
             >
-              {darkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+              {localStorage.getItem('theme') === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
             </button>
             <button
               onClick={() => setIsOpen(!isOpen)}
