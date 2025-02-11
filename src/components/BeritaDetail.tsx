@@ -32,6 +32,7 @@ const BeritaDetail = () => {
         navigate("/");
       } finally {
         setLoading(false);
+        window.scrollTo(0, 0);
       }
     };
 

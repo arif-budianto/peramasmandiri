@@ -217,6 +217,7 @@ const BeritaPengumuman = () => {
                   <Link
                     to={`/pengumuman/${item.id}`}
                     className="flex items-center text-green-600 dark:text-green-500 hover:text-green-700 transition-colors duration-300 group"
+                    onClick={() => window.scrollTo(0, 0)}
                   >
                     Baca selengkapnya
                     <ArrowRight className="h-4 w-4 ml-2 transform transition-transform group-hover:translate-x-1" />

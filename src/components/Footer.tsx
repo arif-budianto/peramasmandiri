@@ -32,9 +32,9 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">Layanan</h3>
             <ul className="space-y-2">
-              <li><a href="#" className="text-gray-400 hover:text-white">Penyewaan Tenda & Kursi</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white">Penyewaan Combine Harvester</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white">Layanan Internet Desa</a></li>
+              <li><a href="#katalog" className="text-gray-400 hover:text-white">Penyewaan Tenda & Kursi</a></li>
+              <li><a href="#katalog" className="text-gray-400 hover:text-white">Penyewaan Combine Harvester</a></li>
+              <li><a href="#katalog" className="text-gray-400 hover:text-white">Layanan Internet Desa</a></li>
             </ul>
           </div>
 
@@ -42,8 +42,9 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-4">Tautan</h3>
             <ul className="space-y-2">
               <li><a href="#beranda" onClick={(e) => scrollToSection(e, 'beranda')} className="text-gray-400 hover:text-white">Beranda</a></li>
-              <li><a href="#layanan" onClick={(e) => scrollToSection(e, 'layanan')} className="text-gray-400 hover:text-white">Layanan</a></li>
-              <li><a href="#tentang" onClick={(e) => scrollToSection(e, 'tentang')} className="text-gray-400 hover:text-white">Tentang</a></li>
+              <li><a href="#profil" onClick={(e) => scrollToSection(e, 'profil')} className="text-gray-400 hover:text-white">Profil</a></li>
+              <li><a href="#berita" onClick={(e) => scrollToSection(e, 'berita')} className="text-gray-400 hover:text-white">Berita</a></li>
+              <li><a href="#galeri" onClick={(e) => scrollToSection(e, 'galeri')} className="text-gray-400 hover:text-white">Galeri</a></li>
               <li><a href="#kontak" onClick={(e) => scrollToSection(e, 'kontak')} className="text-gray-400 hover:text-white">Kontak</a></li>
             </ul>
           </div>
@@ -51,7 +52,7 @@ const Footer = () => {
 
         <div className="border-t border-gray-800 mt-12 pt-8 text-center">
           <p className="text-gray-400">
-            © {new Date().getFullYear()} BUMDesa Peramas Mandiri. All rights reserved.
+            {new Date().getFullYear()} BUMDesa Peramas Mandiri. All rights reserved.
             <br />Created by <a href="http://arifbudianto.netlify.app" target="_blank" rel="noopener noreferrer">ARIFBUDIANTO</a>
           </p>
         </div>
@@ -61,4 +62,3 @@ const Footer = () => {
 };
 
 export default Footer;
-
