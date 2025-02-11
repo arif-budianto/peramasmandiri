@@ -63,7 +63,7 @@ const Contact = () => {
               <h3 className="text-xl font-semibold mb-6 text-gray-900 dark:text-white">Informasi Kontak</h3>
               <div className="space-y-6">
                 <div className="flex items-start">
-                  <MapPin className="h-6 w-6 text-green-600 dark:text-green-500 mr-4" />
+                  <MapPin className="h-16 w-16 text-green-600 dark:text-green-500 mr-4" />
                   <div>
                     <h4 className="font-semibold text-gray-900 dark:text-white">Alamat</h4>
                     <p className="text-gray-600 dark:text-gray-300">Jl. M Nuur Sei Gali kode pos 78852, Desa Pangkalan Buton, Kecamatan Sukadana, Kabupaten Kayong Utara</p>
