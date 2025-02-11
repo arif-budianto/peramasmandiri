@@ -24,12 +24,19 @@ const Login = ({ isOpen, onClose }: LoginProps) => {
         password,
       });
 
-      if (error) throw error;
+      if (error) {
+        if (error.message.includes('Invalid login credentials')) {
+          toast.error('Email atau password salah. Silakan coba lagi.');
+        } else {
+          toast.error(error.message || 'Gagal login');
+        }
+        throw error;
+      }
 
       toast.success('Login berhasil!');
       onClose();
     } catch (error: any) {
-      toast.error(error.message || 'Gagal login');
+      // Error sudah ditangani di atas
     } finally {
       setLoading(false);
     }
