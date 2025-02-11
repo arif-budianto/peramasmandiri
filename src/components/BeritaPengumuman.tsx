@@ -1,6 +1,9 @@
-import { Calendar, Bell, ArrowRight } from "lucide-react";
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Bell, ArrowRight, Plus, Calendar, Edit, Trash2 } from "lucide-react";
+import { useState, useEffect } from 'react';
+import { useAuth } from '../contexts/AuthContext';
+import BeritaForm from './BeritaForm';
+import toast from 'react-hot-toast';
+import { Link, useNavigate } from 'react-router-dom';
 
 interface BeritaProps {
   id: string;
@@ -12,90 +15,108 @@ interface BeritaProps {
   isi: string;
 }
 
-export const daftarBerita: BeritaProps[] = [
-  {
-    id: "1",
-    judul: "BUMDesa Pangkalan Buton Menuju Internet Desa Mandiri",
-    tanggal: "2025-02-09",
-    ringkasan:
-      "BUMDesa Pangkalan Buton mengadakan program untuk meningkatkan akses internet di desa, memastikan semua masyarakat mendapatkan koneksi yang stabil dan cepat.",
-    gambar: "https://i.imgur.com/6aFxl1B.jpg",
-    kategori: "berita",
-    isi: `<p>BUMDesa Pangkalan Buton telah meluncurkan program inovatif yang bertujuan untuk meningkatkan akses internet di seluruh wilayah desa. Program ini merupakan langkah penting dalam upaya memastikan bahwa seluruh masyarakat desa memiliki akses ke koneksi internet yang stabil dan cepat.</p>
-
-<p>Beberapa poin penting dari program ini meliputi:</p>
-
-<ul>
-  <li>Pemasangan infrastruktur jaringan fiber optik</li>
-  <li>Pembangunan menara wifi di titik-titik strategis</li>
-  <li>Pelatihan digital literacy untuk warga</li>
-  <li>Kerjasama dengan provider internet terkemuka</li>
-</ul>
-
-<p>Program ini diharapkan dapat mendukung berbagai aktivitas masyarakat, mulai dari pendidikan daring hingga pengembangan UMKM digital di desa.</p>`,
-  },
-  {
-    id: "2",
-    judul: "Pertemuan di Kecamatan Membahas Program Internet Desa",
-    tanggal: "2025-02-06",
-    ringkasan:
-      "Jadwal pertemuan di kecamatan untuk membahas program internet desa yang bertujuan meningkatkan aksesibilitas dan konektivitas di wilayah tersebut.",
-    gambar: "https://images.pexels.com/photos/1181406/pexels-photo-1181406.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    kategori: "pengumuman",
-    isi: `<p>Pada tanggal 6 Februari 2025, akan diadakan pertemuan penting di kantor kecamatan untuk membahas implementasi program internet desa. Pertemuan ini akan membahas beberapa agenda penting:</p>
-
-<ul>
-  <li>Evaluasi infrastruktur internet yang ada</li>
-  <li>Perencanaan pengembangan jaringan baru</li>
-  <li>Diskusi anggaran dan pendanaan</li>
-  <li>Penetapan timeline implementasi</li>
-</ul>
-
-<p>Pertemuan ini akan dihadiri oleh:</p>
-<ul>
-  <li>Camat dan jajarannya</li>
-  <li>Kepala Desa se-kecamatan</li>
-  <li>Perwakilan BUMDesa</li>
-  <li>Tim teknis provider internet</li>
-</ul>
-
-<p>Diharapkan dengan adanya pertemuan ini, program internet desa dapat segera direalisasikan untuk mendukung kemajuan digital di wilayah kita.</p>`,
-  },
-  {
-    id: "3",
-    judul: "Perencanaan Layanan Internet Desa",
-    tanggal: "2025-02-03",
-    ringkasan:
-      "BUMDesa sedang merencanakan peningkatan layanan internet untuk memberikan koneksi yang lebih stabil dan cepat dan menjangkau seluruh masyarakat.",
-    gambar: "https://i.imgur.com/jmCx8LD.jpg",
-    kategori: "pengumuman",
-    isi: `<p>BUMDesa kami dengan bangga mengumumkan inisiatif baru dalam peningkatan layanan internet desa. Program ini dirancang untuk memberikan solusi konektivitas yang lebih baik bagi seluruh warga.</p>
-
-<p>Beberapa poin penting dalam perencanaan ini meliputi:</p>
-
-<ul>
-  <li>Survei kebutuhan internet per wilayah</li>
-  <li>Analisis infrastruktur yang dibutuhkan</li>
-  <li>Perhitungan biaya dan manfaat</li>
-  <li>Rencana implementasi bertahap</li>
-</ul>
-
-<p>Target yang ingin dicapai:</p>
-<ul>
-  <li>Kecepatan internet minimal 20 Mbps</li>
-  <li>Jangkauan hingga 95% wilayah desa</li>
-  <li>Harga yang terjangkau untuk warga</li>
-  <li>Layanan pelanggan 24/7</li>
-</ul>
-
-<p>Kami berharap dengan peningkatan layanan ini, dapat mendukung berbagai aktivitas digital warga, dari pendidikan hingga UMKM.</p>`,
-  },
-];
+import { supabase } from '../lib/supabase';
 
 const BeritaPengumuman = () => {
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const { user } = useAuth();
+  const [berita, setBerita] = useState<BeritaProps[]>([]);
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [beritaToEdit, setBeritaToEdit] = useState<BeritaProps | undefined>();
+  const [loading, setLoading] = useState(true);
+
+  const fetchBerita = async () => {
+    try {
+      console.log('Mulai fetch berita...'); // Debug log
+      setLoading(true);
+      
+      const { data, error } = await supabase
+        .from('berita')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      console.log('Raw data from Supabase:', data); // Debug log
+
+      if (error) {
+        console.error('Error fetching berita:', error);
+        throw error;
+      }
+
+      if (data && Array.isArray(data)) {
+        // Map data to match BeritaProps interface
+        const mappedData = data.map(item => {
+          console.log('Processing item:', item); // Debug log
+          return {
+            id: item.id,
+            judul: item.judul || '',
+            tanggal: item.created_at || new Date().toISOString(),
+            ringkasan: item.ringkasan || '',
+            gambar: item.gambar || '',
+            kategori: item.kategori || 'berita',
+            isi: item.isi || ''
+          };
+        });
+        console.log('Mapped data:', mappedData); // Debug log
+        setBerita(mappedData);
+      } else {
+        console.log('No data or invalid data structure received'); // Debug log
+        setBerita([]);
+      }
+    } catch (error: any) {
+      console.error('Error detail:', error);
+      toast.error('Gagal memuat berita: ' + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    console.log('BeritaPengumuman component mounted'); // Debug log
+    fetchBerita();
+  }, []);
+
+  // Tambahkan effect untuk memantau perubahan isFormOpen
+  useEffect(() => {
+    if (!isFormOpen) {
+      console.log('Form closed, fetching new data...'); // Debug log
+      fetchBerita();
+    }
+  }, [isFormOpen]);
+
+  const handleEdit = (item: BeritaProps) => {
+    setBeritaToEdit(item);
+    setIsFormOpen(true);
+  };
+
+  const handleDelete = async (id: string) => {
+    if (window.confirm('Apakah Anda yakin ingin menghapus item ini?')) {
+      try {
+        const { error } = await supabase
+          .from('berita')
+          .delete()
+          .eq('id', id);
+
+        if (error) throw error;
+        toast.success('Item berhasil dihapus!');
+        fetchBerita();
+      } catch (error: any) {
+        toast.error(error.message);
+      }
+    }
+  };
+
+  const handleFormClose = () => {
+    setIsFormOpen(false);
+    setBeritaToEdit(undefined);
+    fetchBerita();
+  };
+  const navigate = useNavigate();
   const handleButtonClick = () => {
-    setIsPopupOpen(true);
+    navigate('/semua-berita');
+    // Scroll ke atas halaman
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
   };
 
   return (
@@ -110,67 +131,121 @@ const BeritaPengumuman = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {daftarBerita.map((item, index) => (
-            <div
-              key={index}
-              className="bg-gray-50 dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg transition-transform duration-300 hover:scale-105"
+        {user && (
+          <div className="flex justify-center mb-8">
+            <button
+              onClick={() => setIsFormOpen(true)}
+              className="flex items-center px-6 py-3 text-lg font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 shadow-lg"
             >
-              <div className="relative h-48">
-                <img
-                  src={item.gambar}
-                  alt={item.judul}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute top-4 right-4">
-                  <span
-                    className={`px-3 py-1 rounded-full text-sm font-medium ${
-                      item.kategori === "berita"
-                        ? "bg-green-100 text-green-800"
-                        : "bg-yellow-100 text-yellow-800"
-                    }`}
-                  >
-                    {item.kategori === "berita" ? "Berita" : "Pengumuman"}
-                  </span>
-                </div>
-              </div>
-              <div className="p-6">
-                <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm mb-2">
-                  <Calendar className="h-4 w-4 mr-2" />
-                  {item.tanggal}
-                </div>
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                  {item.judul}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300 mb-4">
-                  {item.ringkasan}
-                </p>
-                <Link
-                  to={`/pengumuman/${item.id}`}
-                  className="flex items-center text-green-600 dark:text-green-500 hover:text-green-700 transition-colors duration-300 group"
-                >
-                  Baca selengkapnya
-                  <ArrowRight className="h-4 w-4 ml-2 transform transition-transform group-hover:translate-x-1" />
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="text-center mt-12">
-          <button className="inline-flex items-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors duration-300" onClick={handleButtonClick}>
-            <Bell className="h-5 w-5 mr-2" />
-            Lihat Semua Pengumuman
-          </button>
-        </div>
-        {isPopupOpen && (
-          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white p-4 rounded-lg shadow-lg">
-              <h2 className="text-lg font-bold">Belum Ada Pengumuman Lainnya</h2>
-              <p>Silakan cek kembali nanti.</p>
-              <button className="mt-4 bg-red-500 text-white px-4 py-2 rounded" onClick={() => setIsPopupOpen(false)}>Tutup</button>
-            </div>
+              <Plus className="w-6 h-6 mr-2" />
+              Tambah Berita Baru
+            </button>
           </div>
+        )}
+
+        {loading ? (
+          <div className="text-center py-8">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto"></div>
+            <p className="mt-4 text-gray-600 dark:text-gray-400">Memuat data...</p>
+          </div>
+        ) : berita.length === 0 ? (
+          <div className="text-center py-8">
+            <p className="text-gray-600 dark:text-gray-400">Belum ada berita atau pengumuman</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+            {berita.slice(0, 3).map((item, index) => (
+              <div
+                key={index}
+                className="bg-gray-50 dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg transition-transform duration-300 hover:scale-105"
+              >
+                <div className="relative h-48">
+                  <img
+                    src={item.gambar}
+                    alt={item.judul}
+                    className="w-full h-full object-cover"
+                  />
+                  {user && (
+                    <div className="absolute top-4 left-4 flex space-x-2">
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleEdit(item);
+                        }}
+                        className="p-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                      >
+                        <Edit className="h-4 w-4" />
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleDelete(item.id);
+                        }}
+                        className="p-2 bg-red-600 text-white rounded-full hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
+                  )}
+                  <div className="absolute top-4 right-4">
+                    <span
+                      className={`px-3 py-1 rounded-full text-sm font-medium ${
+                        item.kategori === "berita"
+                          ? "bg-green-100 text-green-800"
+                          : "bg-yellow-100 text-yellow-800"
+                      }`}
+                    >
+                      {item.kategori === "berita" ? "Berita" : "Pengumuman"}
+                    </span>
+                  </div>
+                </div>
+                <div className="p-6">
+                  <div className="flex items-center text-gray-500 dark:text-gray-400 text-sm mb-2">
+                    <Calendar className="h-4 w-4 mr-2" />
+                    {new Date(item.tanggal).toLocaleDateString('id-ID', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
+                    })}
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+                    {item.judul}
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300 mb-4">
+                    {item.ringkasan}
+                  </p>
+                  <Link
+                    to={`/pengumuman/${item.id}`}
+                    className="flex items-center text-green-600 dark:text-green-500 hover:text-green-700 transition-colors duration-300 group"
+                  >
+                    Baca selengkapnya
+                    <ArrowRight className="h-4 w-4 ml-2 transform transition-transform group-hover:translate-x-1" />
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {berita.length > 3 && (
+          <div className="text-center">
+            <button 
+              onClick={handleButtonClick}
+              className="inline-flex items-center px-6 py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors duration-300"
+            >
+              <Bell className="h-5 w-5 mr-2" />
+              Lihat Semua Berita/Pengumuman
+            </button>
+          </div>
+        )}
+
+
+        {isFormOpen && (
+          <BeritaForm
+            isOpen={isFormOpen}
+            onClose={handleFormClose}
+            beritaToEdit={beritaToEdit}
+          />
         )}
       </div>
     </section>
