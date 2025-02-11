@@ -13,14 +13,14 @@ const Hero = () => {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
           <div className="flex flex-col justify-center h-full">
             <div className="text-white mb-8">
-              <h1 className="text-4xl md:text-6xl font-bold mb-4">
+              <h1 className="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-green-500 to-white bg-clip-text text-transparent animate-gradient">
                 BUMDesa Peramas Mandiri
               </h1>
               <p className="text-xl md:text-2xl mb-8">
                 Melayani Kebutuhan Desa, Membangun Ekonomi Bersama
               </p>
               <a
-                href="#layanan"
+                href="#katalog"
                 className="bg-green-600 text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-green-700 transition duration-300"
               >
                 Lihat Layanan Kami
