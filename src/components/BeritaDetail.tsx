@@ -36,7 +36,6 @@ const BeritaDetail: React.FC = () => {
 
         // Jika tidak ditemukan dengan slug, coba cari berdasarkan ID
         if (error) {
-          console.log("Tidak ditemukan dengan slug, mencoba dengan ID...");
           ({ data, error } = await supabase
             .from("berita")
             .select("*")
@@ -45,7 +44,6 @@ const BeritaDetail: React.FC = () => {
         }
 
         if (error) {
-          console.error("Error saat mengambil berita:", error);
           throw new Error("Berita tidak ditemukan");
         }
 
@@ -53,7 +51,6 @@ const BeritaDetail: React.FC = () => {
           throw new Error("Berita tidak ditemukan");
         }
 
-        console.log("Berita ditemukan:", data);
         setBerita(data);
 
         // Update URL dengan slug yang benar jika diperlukan
@@ -62,7 +59,6 @@ const BeritaDetail: React.FC = () => {
           window.history.replaceState(null, "", newPath);
         }
       } catch (error: any) {
-        console.error("Error:", error);
         toast.error(error.message || "Gagal memuat berita");
         setTimeout(() => navigate("/"), 2000);
       } finally {
@@ -162,7 +158,7 @@ const BeritaDetail: React.FC = () => {
             <img
               src={berita.gambar}
               alt={berita.judul}
-              className="w-full h-96 object-cover rounded-lg mb-8"
+              className="w-full h-auto object-contain md:h-96 md:object-cover rounded-lg mb-8"
             />
           )}
 
