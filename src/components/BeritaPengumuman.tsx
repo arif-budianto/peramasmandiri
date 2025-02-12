@@ -174,7 +174,7 @@ const BeritaPengumuman = () => {
             {berita.slice(0, 3).map((item, index) => (
               <div
                 key={index}
-                className="bg-gray-50 dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg transition-transform duration-300 hover:scale-105"
+                className="bg-gray-50 dark:bg-gray-900 rounded-xl overflow-hidden shadow-lg transition-transform duration-300 hover:scale-105"
               >
                 <div className="relative h-48">
                   <img
