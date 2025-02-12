@@ -38,7 +38,8 @@ function App() {
             <Route path="/profil" element={<ManajemenProfil />} />
             <Route path="/katalog" element={<KatalogLayanan />} />
 
-            <Route path="/pengumuman/:id" element={<BeritaDetail />} />
+            <Route path="/pengumuman/:slug" element={<BeritaDetail />} />
+            <Route path="/berita/:slug" element={<BeritaDetail />} />
             <Route path="/semua-berita" element={<SemuaBerita />} />
           </Routes>
           <Footer />

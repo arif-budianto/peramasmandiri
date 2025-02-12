@@ -27,6 +27,17 @@ const BeritaForm = ({ isOpen, onClose, beritaToEdit }: BeritaFormProps) => {
     gambar: beritaToEdit?.gambar || '',
   });
 
+  const generateSlug = (text: string) => {
+    const slug = text
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '') // Hapus karakter spesial
+      .replace(/\s+/g, '-') // Ganti spasi dengan tanda hubung
+      .replace(/-+/g, '-') // Hapus tanda hubung berlebih
+      .trim(); // Hapus spasi di awal dan akhir
+    
+    return `${slug}-${Date.now()}`; // Tambahkan timestamp untuk memastikan keunikan
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -58,13 +69,15 @@ const BeritaForm = ({ isOpen, onClose, beritaToEdit }: BeritaFormProps) => {
       }
 
       const now = new Date().toISOString();
+      const slug = generateSlug(formData.judul);
       const beritaData: any = {
         judul: formData.judul.trim(),
         ringkasan: formData.ringkasan.trim(),
         isi: formData.isi.split('\n').map(para => para.trim()).filter(para => para.length > 0).map(para => `<p>${para}</p>`).join('\n'),
         kategori: formData.kategori as 'berita' | 'pengumuman',
         gambar: gambarUrl || '',
-        updated_at: now
+        updated_at: now,
+        slug: slug
       };
 
       // Hanya tambahkan created_at untuk data baru
