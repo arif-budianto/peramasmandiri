@@ -25,7 +25,7 @@ const MediaManager = ({ kategori, onClose }: MediaManagerProps) => {
   const [selectedMedia, setSelectedMedia] = useState<MediaItem | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
   const [fileName, setFileName] = useState("");
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
   useEffect(() => {
     fetchMedia();
@@ -47,72 +47,92 @@ const MediaManager = ({ kategori, onClose }: MediaManagerProps) => {
   }, [selectedMedia, onClose]);
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
+    const files = event.target.files;
+    if (!files || files.length === 0) return;
 
-    // Validasi ukuran file (50MB)
-    if (file.size > 50 * 1024 * 1024) {
-      toast.error("Ukuran file terlalu besar. Maksimal 50MB");
-      event.target.value = "";
-      setSelectedFile(null);
-      return;
+    const validFiles: File[] = [];
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      // Validasi ukuran file (50MB)
+      if (file.size > 100 * 1024 * 1024) {
+        toast.error(`Ukuran file ${file.name} terlalu besar. Maksimal 100MB`);
+        event.target.value = "";
+        setSelectedFiles([]);
+        return;
+      }
+      // Validasi tipe file
+      if (!file.type.startsWith("image/") && !file.type.startsWith("video/")) {
+        toast.error(`Format file ${file.name} tidak didukung`);
+        event.target.value = "";
+        setSelectedFiles([]);
+        return;
+      }
+      validFiles.push(file);
     }
 
-    // Validasi tipe file
-    if (!file.type.startsWith("image/") && !file.type.startsWith("video/")) {
-      toast.error("Format file tidak didukung");
-      event.target.value = "";
-      setSelectedFile(null);
-      return;
-    }
-
-    setSelectedFile(file);
-    // Set nama file default dari file yang dipilih
-    if (!fileName) {
-      setFileName(file.name.split(".")[0]);
+    setSelectedFiles(validFiles);
+    // Jika hanya satu file dan fileName belum diset, gunakan nama file tersebut
+    if (validFiles.length === 1 && !fileName) {
+      setFileName(validFiles[0].name.split(".")[0]);
     }
   };
 
   const handleUpload = async () => {
-    if (!selectedFile || !fileName.trim()) {
-      toast.error("Mohon isi nama file dan pilih file yang akan diupload");
+    if (
+      selectedFiles.length === 0 ||
+      (!fileName.trim() && selectedFiles.length === 1)
+    ) {
+      toast.error(
+        "Mohon isi nama file (jika upload satu file) dan pilih file yang akan diupload"
+      );
       return;
     }
 
     setIsUploading(true);
-
     try {
-      // Upload file ke storage
-      const fileExt = selectedFile.name.split(".").pop();
-      const safeFileName = fileName.replace(/[^a-z0-9]/gi, "-").toLowerCase();
-      const filePath = `${kategori}/${safeFileName}-${Date.now()}.${fileExt}`;
+      // Upload setiap file yang dipilih
+      const uploadPromises = selectedFiles.map((file, index) => {
+        const fileExt = file.name.split(".").pop();
+        // Jika lebih dari 1 file, tambahkan indeks; jika 1 file, gunakan fileName (bisa diisi manual) atau nama asli file
+        const baseName = fileName.trim() || file.name.split(".")[0];
+        const uniqueName =
+          selectedFiles.length > 1
+            ? `${baseName}-${index + 1}-${Date.now()}`
+            : baseName;
+        const safeFileName = uniqueName
+          .replace(/[^a-z0-9]/gi, "-")
+          .toLowerCase();
+        const filePath = `${kategori}/${safeFileName}.${fileExt}`;
 
-      const { error: uploadError } = await supabase.storage
-        .from("galeri")
-        .upload(filePath, selectedFile, {
-          cacheControl: "3600",
-          upsert: false,
-        });
+        return supabase.storage
+          .from("galeri")
+          .upload(filePath, file, {
+            cacheControl: "3600",
+            upsert: false,
+          })
+          .then(async ({ error: uploadError }) => {
+            if (uploadError) throw uploadError;
 
-      if (uploadError) throw uploadError;
+            const {
+              data: { publicUrl },
+            } = supabase.storage.from("galeri").getPublicUrl(filePath);
 
-      // Dapatkan public URL
-      const {
-        data: { publicUrl },
-      } = supabase.storage.from("galeri").getPublicUrl(filePath);
+            // Simpan data ke database untuk setiap file
+            const { error: dbError } = await supabase.from("galeri").insert([
+              {
+                url: publicUrl,
+                kategori,
+                type: file.type.startsWith("image/") ? "image" : "video",
+                caption: baseName,
+                created_at: new Date().toISOString(),
+              },
+            ]);
 
-      // Simpan data ke database
-      const { error: dbError } = await supabase.from("galeri").insert([
-        {
-          url: publicUrl,
-          kategori,
-          type: selectedFile.type.startsWith("image/") ? "image" : "video",
-          caption: fileName,
-          created_at: new Date().toISOString(),
-        },
-      ]);
+            if (dbError) throw dbError;
+          });
+      });
 
-      if (dbError) throw dbError;
+      await Promise.all(uploadPromises);
 
       toast.success("Media berhasil diupload!");
       fetchMedia();
@@ -120,7 +140,7 @@ const MediaManager = ({ kategori, onClose }: MediaManagerProps) => {
       toast.error("Gagal mengupload media: " + error.message);
     } finally {
       setIsUploading(false);
-      setSelectedFile(null);
+      setSelectedFiles([]);
       setFileName("");
     }
   };
@@ -236,7 +256,8 @@ const MediaManager = ({ kategori, onClose }: MediaManagerProps) => {
         </div>
       )}
       <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-xl">
-        <div className="flex justify-between items-center mb-6">
+        {/* Container header diubah menjadi sticky */}
+        <div className="sticky top-0 z-10 bg-white dark:bg-gray-800 flex justify-between items-center p-4 mb-6">
           <h3 className="text-3xl font-extrabold text-gray-900 dark:text-white">
             {kategori === "tenda" && "Media Tenda & Kursi"}
             {kategori === "combine" && "Media Combine Harvester"}
@@ -264,7 +285,7 @@ const MediaManager = ({ kategori, onClose }: MediaManagerProps) => {
                 id="fileName"
                 value={fileName}
                 onChange={(e) => setFileName(e.target.value)}
-                placeholder="Masukkan nama file"
+                placeholder="Masukkan nama file (opsional jika multi upload)"
                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
               />
             </div>
@@ -281,12 +302,15 @@ const MediaManager = ({ kategori, onClose }: MediaManagerProps) => {
                     <div className="flex items-center text-gray-500 dark:text-gray-400">
                       <Plus className="w-6 h-6" />
                       <span className="ml-2">
-                        {selectedFile ? selectedFile.name : "Pilih File"}
+                        {selectedFiles.length > 0
+                          ? `${selectedFiles.length} file dipilih`
+                          : "Pilih File"}
                       </span>
                     </div>
                   )}
                   <input
                     type="file"
+                    multiple
                     className="hidden"
                     onChange={handleFileSelect}
                     accept="image/*,video/*"
@@ -296,9 +320,15 @@ const MediaManager = ({ kategori, onClose }: MediaManagerProps) => {
               </div>
               <button
                 onClick={handleUpload}
-                disabled={isUploading || !selectedFile || !fileName.trim()}
+                disabled={
+                  isUploading ||
+                  selectedFiles.length === 0 ||
+                  (selectedFiles.length === 1 && !fileName.trim())
+                }
                 className={`px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 ${
-                  isUploading || !selectedFile || !fileName.trim()
+                  isUploading ||
+                  selectedFiles.length === 0 ||
+                  (selectedFiles.length === 1 && !fileName.trim())
                     ? "bg-gray-400 cursor-not-allowed"
                     : "bg-green-600 hover:bg-green-700 focus:ring-green-500"
                 } text-white shadow-md transition-transform duration-200 hover:scale-105`}
