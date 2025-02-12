@@ -109,8 +109,14 @@ const BeritaDetail: React.FC = () => {
         <meta property="og:locale" content="id_ID" />
         <meta property="og:title" content={`${berita.judul} - BUMDesa Peramas Mandiri`} />
         <meta property="og:description" content={berita.ringkasan} />
-        <meta property="og:image" content={berita.gambar || "https://peramasmandiri.net/Logo%20Bumdes%203.png"} />
-        <meta property="og:image:secure_url" content={berita.gambar || "https://peramasmandiri.net/Logo%20Bumdes%203.png"} />
+        <meta 
+          property="og:image" 
+          content={berita.gambar?.startsWith('http') ? berita.gambar : `https://peramasmandiri.net${berita.gambar}`} 
+        />
+        <meta 
+          property="og:image:secure_url" 
+          content={berita.gambar?.startsWith('http') ? berita.gambar : `https://peramasmandiri.net${berita.gambar}`} 
+        />
         <meta property="og:image:type" content="image/png" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
