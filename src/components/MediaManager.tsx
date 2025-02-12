@@ -134,7 +134,7 @@ const MediaManager = ({ kategori, onClose }: MediaManagerProps) => {
 
     try {
       const { error } = await supabase
-        .from("gallery")
+        .from("galeri")
         .update({ caption: newCaption })
         .eq("id", id);
 
