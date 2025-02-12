@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { Dialog } from '@headlessui/react';
-import { X, Image as ImageIcon, FileText, Tag, AlignLeft } from 'lucide-react';
-import { supabase } from '../lib/supabase';
-import toast from 'react-hot-toast';
+import { useState } from "react";
+import { Dialog } from "@headlessui/react";
+import { X, Image as ImageIcon, FileText, Tag, AlignLeft } from "lucide-react";
+import { supabase } from "../lib/supabase";
+import toast from "react-hot-toast";
 
 interface BeritaFormProps {
   isOpen: boolean;
@@ -12,7 +12,7 @@ interface BeritaFormProps {
     judul: string;
     ringkasan: string;
     isi: string;
-    kategori: 'berita' | 'pengumuman';
+    kategori: "berita" | "pengumuman";
     gambar?: string;
     slug?: string;
   };
@@ -21,21 +21,21 @@ interface BeritaFormProps {
 const BeritaForm = ({ isOpen, onClose, beritaToEdit }: BeritaFormProps) => {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    judul: beritaToEdit?.judul || '',
-    ringkasan: beritaToEdit?.ringkasan || '',
-    isi: beritaToEdit?.isi || '',
-    kategori: beritaToEdit?.kategori || 'berita',
-    gambar: beritaToEdit?.gambar || '',
+    judul: beritaToEdit?.judul || "",
+    ringkasan: beritaToEdit?.ringkasan || "",
+    isi: beritaToEdit?.isi || "",
+    kategori: beritaToEdit?.kategori || "berita",
+    gambar: beritaToEdit?.gambar || "",
   });
 
   const generateSlug = (text: string, id?: string) => {
     const baseSlug = text
       .toLowerCase()
-      .replace(/[^a-z0-9\s-]/g, '') // Hapus karakter spesial kecuali huruf, angka, spasi, dan tanda hubung
-      .replace(/\s+/g, '-') // Ganti spasi dengan tanda hubung
-      .replace(/-+/g, '-') // Hapus tanda hubung berlebih
-      .replace(/^-+/, '') // Hapus tanda hubung di awal
-      .replace(/-+$/, '') // Hapus tanda hubung di akhir
+      .replace(/[^a-z0-9\s-]/g, "") // Hapus karakter spesial kecuali huruf, angka, spasi, dan tanda hubung
+      .replace(/\s+/g, "-") // Ganti spasi dengan tanda hubung
+      .replace(/-+/g, "-") // Hapus tanda hubung berlebih
+      .replace(/^-+/, "") // Hapus tanda hubung di awal
+      .replace(/-+$/, "") // Hapus tanda hubung di akhir
       .trim(); // Hapus spasi di awal dan akhir
 
     // Jika ada ID, gunakan itu sebagai suffix, jika tidak gunakan timestamp
@@ -48,40 +48,53 @@ const BeritaForm = ({ isOpen, onClose, beritaToEdit }: BeritaFormProps) => {
     setLoading(true);
 
     try {
-      const fileInput = document.getElementById('gambar') as HTMLInputElement;
+      const fileInput = document.getElementById("gambar") as HTMLInputElement;
       let gambarUrl = formData.gambar;
 
       if (fileInput.files && fileInput.files[0]) {
         const file = fileInput.files[0];
-        const fileExt = file.name.split('.').pop();
+        const fileExt = file.name.split(".").pop();
         const fileName = `${Math.random()}.${fileExt}`;
         const filePath = `berita/${fileName}`;
 
         const { error: uploadError } = await supabase.storage
-          .from('media')
+          .from("media")
           .upload(filePath, file);
 
         if (uploadError) throw uploadError;
 
-        gambarUrl = supabase.storage.from('media').getPublicUrl(filePath).data.publicUrl;
+        const {
+          data: { publicUrl },
+        } = supabase.storage.from("media").getPublicUrl(filePath);
+
+        // Pastikan URL gambar adalah URL absolut
+        gambarUrl = publicUrl.startsWith("http")
+          ? publicUrl
+          : `https://peramasmandiri.net${publicUrl}`;
       }
 
-      console.log('Submitting form data:', formData); // Debug log
+      console.log("Submitting form data:", formData); // Debug log
 
       // Validasi data sebelum dikirim
       if (!formData.judul.trim()) {
-        throw new Error('Judul harus diisi');
+        throw new Error("Judul harus diisi");
       }
 
       const now = new Date().toISOString();
       const beritaData: any = {
         judul: formData.judul.trim(),
         ringkasan: formData.ringkasan.trim(),
-        isi: formData.isi.split('\n').map(para => para.trim()).filter(para => para.length > 0).map(para => `<p>${para}</p>`).join('\n'),
-        kategori: formData.kategori as 'berita' | 'pengumuman',
-        gambar: gambarUrl || '',
+        isi: formData.isi
+          .split("\n")
+          .map((para) => para.trim())
+          .filter((para) => para.length > 0)
+          .map((para) => `<p>${para}</p>`)
+          .join("\n"),
+        kategori: formData.kategori as "berita" | "pengumuman",
+        gambar: gambarUrl || "https://peramasmandiri.net/Logo%20Bumdes%203.png",
         updated_at: now,
-        slug: beritaToEdit?.slug || generateSlug(formData.judul, beritaToEdit?.id) // Gunakan slug yang ada jika mengedit, atau buat baru dengan ID jika ada
+        slug:
+          beritaToEdit?.slug || generateSlug(formData.judul, beritaToEdit?.id), // Gunakan slug yang ada jika mengedit, atau buat baru dengan ID jika ada
       };
 
       // Hanya tambahkan created_at untuk data baru
@@ -89,41 +102,42 @@ const BeritaForm = ({ isOpen, onClose, beritaToEdit }: BeritaFormProps) => {
         beritaData.created_at = now;
       }
 
-      console.log('Prepared data for Supabase:', beritaData); // Debug log
+      console.log("Prepared data for Supabase:", beritaData); // Debug log
 
-      console.log('Sending data to Supabase:', beritaData);
-      
+      console.log("Sending data to Supabase:", beritaData);
+
       const { data, error } = beritaToEdit
         ? await supabase
-            .from('berita')
+            .from("berita")
             .update(beritaData)
-            .eq('id', beritaToEdit.id)
+            .eq("id", beritaToEdit.id)
             .select()
-        : await supabase
-            .from('berita')
-            .insert([beritaData])
-            .select();
+        : await supabase.from("berita").insert([beritaData]).select();
 
       if (error) {
-        console.error('Supabase error:', error);
+        console.error("Supabase error:", error);
         throw error;
       }
 
-      console.log('Supabase response data:', data); // Debug log
+      console.log("Supabase response data:", data); // Debug log
 
       if (error) {
-        console.error('Error saving berita:', error); // Untuk debugging
+        console.error("Error saving berita:", error); // Untuk debugging
         throw error;
       }
 
-      console.log('Saved data:', data); // Untuk debugging
-      toast.success(beritaToEdit ? 'Berita berhasil diperbarui!' : 'Berita berhasil ditambahkan!');
+      console.log("Saved data:", data); // Untuk debugging
+      toast.success(
+        beritaToEdit
+          ? "Berita berhasil diperbarui!"
+          : "Berita berhasil ditambahkan!"
+      );
       onClose();
       window.location.reload(); // Refresh halaman untuk memuat data terbaru
 
       onClose();
     } catch (error: any) {
-      toast.error(error.message || 'Terjadi kesalahan');
+      toast.error(error.message || "Terjadi kesalahan");
     } finally {
       setLoading(false);
     }
@@ -137,7 +151,7 @@ const BeritaForm = ({ isOpen, onClose, beritaToEdit }: BeritaFormProps) => {
         <Dialog.Panel className="mx-auto max-w-2xl rounded-2xl bg-white dark:bg-gray-800 p-8 w-full shadow-2xl transform transition-all overflow-hidden border border-gray-100 dark:border-gray-700">
           <div className="flex justify-between items-center mb-8">
             <Dialog.Title className="text-2xl font-bold bg-gradient-to-r from-green-600 to-green-400 bg-clip-text text-transparent">
-              {beritaToEdit ? 'Edit Berita' : 'Tambah Berita'}
+              {beritaToEdit ? "Edit Berita" : "Tambah Berita"}
             </Dialog.Title>
             <button
               onClick={onClose}
@@ -156,7 +170,9 @@ const BeritaForm = ({ isOpen, onClose, beritaToEdit }: BeritaFormProps) => {
               <input
                 type="text"
                 value={formData.judul}
-                onChange={(e) => setFormData({ ...formData, judul: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, judul: e.target.value })
+                }
                 className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all duration-200 hover:border-green-400"
                 required
               />
@@ -169,7 +185,12 @@ const BeritaForm = ({ isOpen, onClose, beritaToEdit }: BeritaFormProps) => {
               </div>
               <select
                 value={formData.kategori}
-                onChange={(e) => setFormData({ ...formData, kategori: e.target.value as 'berita' | 'pengumuman' })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    kategori: e.target.value as "berita" | "pengumuman",
+                  })
+                }
                 className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all duration-200 hover:border-green-400"
               >
                 <option value="berita">Berita</option>
@@ -184,7 +205,9 @@ const BeritaForm = ({ isOpen, onClose, beritaToEdit }: BeritaFormProps) => {
               </div>
               <textarea
                 value={formData.ringkasan}
-                onChange={(e) => setFormData({ ...formData, ringkasan: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, ringkasan: e.target.value })
+                }
                 rows={3}
                 className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all duration-200 hover:border-green-400"
                 required
@@ -198,7 +221,9 @@ const BeritaForm = ({ isOpen, onClose, beritaToEdit }: BeritaFormProps) => {
               </div>
               <textarea
                 value={formData.isi}
-                onChange={(e) => setFormData({ ...formData, isi: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, isi: e.target.value })
+                }
                 rows={6}
                 className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all duration-200 hover:border-green-400"
                 required
@@ -231,7 +256,7 @@ const BeritaForm = ({ isOpen, onClose, beritaToEdit }: BeritaFormProps) => {
                 disabled={loading}
                 className="px-6 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-green-600 to-green-500 rounded-lg hover:from-green-700 hover:to-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-105 shadow-md hover:shadow-lg"
               >
-                {loading ? 'Menyimpan...' : 'Simpan'}
+                {loading ? "Menyimpan..." : "Simpan"}
               </button>
             </div>
           </form>

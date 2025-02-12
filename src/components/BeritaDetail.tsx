@@ -10,7 +10,7 @@ interface Berita {
   judul: string;
   ringkasan: string;
   isi: string;
-  kategori: 'berita' | 'pengumuman';
+  kategori: "berita" | "pengumuman";
   gambar?: string;
   created_at: string;
   slug: string;
@@ -26,7 +26,7 @@ const BeritaDetail: React.FC = () => {
     const fetchBerita = async () => {
       try {
         setLoading(true);
-        
+
         // Coba cari berdasarkan slug terlebih dahulu
         let { data, error } = await supabase
           .from("berita")
@@ -36,7 +36,7 @@ const BeritaDetail: React.FC = () => {
 
         // Jika tidak ditemukan dengan slug, coba cari berdasarkan ID
         if (error) {
-          console.log('Tidak ditemukan dengan slug, mencoba dengan ID...');
+          console.log("Tidak ditemukan dengan slug, mencoba dengan ID...");
           ({ data, error } = await supabase
             .from("berita")
             .select("*")
@@ -45,26 +45,26 @@ const BeritaDetail: React.FC = () => {
         }
 
         if (error) {
-          console.error('Error saat mengambil berita:', error);
-          throw new Error('Berita tidak ditemukan');
+          console.error("Error saat mengambil berita:", error);
+          throw new Error("Berita tidak ditemukan");
         }
 
         if (!data) {
-          throw new Error('Berita tidak ditemukan');
+          throw new Error("Berita tidak ditemukan");
         }
 
-        console.log('Berita ditemukan:', data);
+        console.log("Berita ditemukan:", data);
         setBerita(data);
-        
+
         // Update URL dengan slug yang benar jika diperlukan
         if (data.slug && data.slug !== slug) {
           const newPath = `/${data.kategori}/${data.slug}`;
-          window.history.replaceState(null, '', newPath);
+          window.history.replaceState(null, "", newPath);
         }
       } catch (error: any) {
-        console.error('Error:', error);
-        toast.error(error.message || 'Gagal memuat berita');
-        setTimeout(() => navigate('/'), 2000);
+        console.error("Error:", error);
+        toast.error(error.message || "Gagal memuat berita");
+        setTimeout(() => navigate("/"), 2000);
       } finally {
         setLoading(false);
         window.scrollTo(0, 0);
@@ -102,31 +102,57 @@ const BeritaDetail: React.FC = () => {
       <Helmet>
         <title>{berita.judul} - BUMDesa Peramas Mandiri</title>
         <meta name="description" content={berita.ringkasan} />
-        
+
         {/* Meta Tags untuk Open Graph */}
         <meta property="og:site_name" content="BUMDesa Peramas Mandiri" />
         <meta property="og:title" content={berita.judul} />
         <meta property="og:description" content={berita.ringkasan} />
-        <meta property="og:image" content={berita.gambar} />
-        <meta property="og:image:secure_url" content={berita.gambar} />
+        <meta
+          property="og:image"
+          content={
+            berita.gambar || "https://peramasmandiri.net/Logo%20Bumdes%203.png"
+          }
+        />
+        <meta
+          property="og:image:secure_url"
+          content={
+            berita.gambar || "https://peramasmandiri.net/Logo%20Bumdes%203.png"
+          }
+        />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:image:alt" content={berita.judul} />
-        <meta property="og:url" content={`https://peramasmandiri.net/${berita.kategori}/${berita.slug}`} />
+        <meta
+          property="og:url"
+          content={`https://peramasmandiri.net/${berita.kategori}/${berita.slug}`}
+        />
         <meta property="og:type" content="article" />
-        
+
         {/* Meta Tags untuk Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@peramasmandiri" />
         <meta name="twitter:title" content={berita.judul} />
         <meta name="twitter:description" content={berita.ringkasan} />
-        <meta name="twitter:image" content={berita.gambar} />
+        <meta
+          name="twitter:image"
+          content={
+            berita.gambar || "https://peramasmandiri.net/Logo%20Bumdes%203.png"
+          }
+        />
         <meta name="twitter:image:alt" content={berita.judul} />
-        
-        {/* Meta Tags tambahan untuk SEO */}
-        <meta name="article:published_time" content={berita.created_at} />
-        <meta name="article:section" content={berita.kategori === 'berita' ? 'Berita' : 'Pengumuman'} />
-        <link rel="canonical" href={`https://peramasmandiri.net/${berita.kategori}/${berita.slug}`} />
+
+        {/* Tambahan meta tags untuk SEO dan sharing */}
+        <link
+          rel="canonical"
+          href={`https://peramasmandiri.net/${berita.kategori}/${berita.slug}`}
+        />
+        <meta name="author" content="BUMDesa Peramas Mandiri" />
+        <meta name="robots" content="index, follow" />
+        <meta property="article:published_time" content={berita.created_at} />
+        <meta
+          property="article:section"
+          content={berita.kategori === "berita" ? "Berita" : "Pengumuman"}
+        />
       </Helmet>
 
       <div className="max-w-4xl mx-auto px-4 py-12">
@@ -166,7 +192,9 @@ const BeritaDetail: React.FC = () => {
             </span>
           </div>
 
-          <h1 className="text-4xl text-gray-600 dark:text-white font-bold mb-4">{berita.judul}</h1>
+          <h1 className="text-4xl text-gray-600 dark:text-white font-bold mb-4">
+            {berita.judul}
+          </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
             {berita.ringkasan}
           </p>
@@ -178,7 +206,9 @@ const BeritaDetail: React.FC = () => {
           {/* Tombol Share WhatsApp */}
           <div className="flex justify-center mt-12">
             <a
-              href={`https://wa.me/?text=${encodeURIComponent(`${berita.judul}\n\n${berita.ringkasan}\n\nBaca selengkapnya di:\n${window.location.href}`)}`}
+              href={`https://wa.me/?text=${encodeURIComponent(
+                `${berita.judul}\n\n${berita.ringkasan}\n\nBaca selengkapnya di:\n${window.location.href}`
+              )}`}
               target="_blank"
               rel="noopener noreferrer"
               className="group flex items-center gap-2 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-6 py-3 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
