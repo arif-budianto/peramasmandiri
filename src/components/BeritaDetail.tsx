@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { supabase } from "../lib/supabase";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Share2 } from "lucide-react";
 import toast from "react-hot-toast";
 
 const BeritaDetail = () => {
@@ -108,6 +108,19 @@ const BeritaDetail = () => {
           className="prose prose-lg dark:prose-invert text-gray-600 dark:text-gray-300 space-y-6"
           dangerouslySetInnerHTML={{ __html: berita.isi }}
         />
+
+        {/* Tombol Share WhatsApp */}
+        <div className="flex justify-center mt-12">
+          <a
+            href={`https://wa.me/?text=${encodeURIComponent(`${berita.judul}\n\n${berita.ringkasan}\n\nBaca selengkapnya di:\n${window.location.href}`)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group flex items-center gap-2 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-6 py-3 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+          >
+            <Share2 className="w-5 h-5 transition-transform group-hover:rotate-12" />
+            <span className="font-medium">Bagikan via WhatsApp</span>
+          </a>
+        </div>
       </article>
     </div>
   );

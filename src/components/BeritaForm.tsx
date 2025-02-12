@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Dialog } from '@headlessui/react';
-import { X } from 'lucide-react';
+import { X, Image as ImageIcon, FileText, Tag, AlignLeft } from 'lucide-react';
 import { supabase } from '../lib/supabase';
 import toast from 'react-hot-toast';
 
@@ -117,9 +117,9 @@ const BeritaForm = ({ isOpen, onClose, beritaToEdit }: BeritaFormProps) => {
       <div className="fixed inset-0 bg-black/30" aria-hidden="true" />
 
       <div className="fixed inset-0 flex items-center justify-center p-4">
-        <Dialog.Panel className="mx-auto max-w-2xl rounded-lg bg-white dark:bg-gray-800 p-6 w-full">
-          <div className="flex justify-between items-center mb-4">
-            <Dialog.Title className="text-lg font-medium text-gray-900 dark:text-white">
+        <Dialog.Panel className="mx-auto max-w-2xl rounded-2xl bg-white dark:bg-gray-800 p-8 w-full shadow-2xl transform transition-all overflow-hidden border border-gray-100 dark:border-gray-700">
+          <div className="flex justify-between items-center mb-8">
+            <Dialog.Title className="text-2xl font-bold bg-gradient-to-r from-green-600 to-green-400 bg-clip-text text-transparent">
               {beritaToEdit ? 'Edit Berita' : 'Tambah Berita'}
             </Dialog.Title>
             <button
@@ -130,28 +130,30 @@ const BeritaForm = ({ isOpen, onClose, beritaToEdit }: BeritaFormProps) => {
             </button>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                Judul
-              </label>
+              <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300 mb-1">
+                <FileText className="w-4 h-4" />
+                <label className="block text-sm font-medium">Judul</label>
+              </div>
               <input
                 type="text"
                 value={formData.judul}
                 onChange={(e) => setFormData({ ...formData, judul: e.target.value })}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all duration-200 hover:border-green-400"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                Kategori
-              </label>
+              <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300 mb-1">
+                <Tag className="w-4 h-4" />
+                <label className="block text-sm font-medium">Kategori</label>
+              </div>
               <select
                 value={formData.kategori}
                 onChange={(e) => setFormData({ ...formData, kategori: e.target.value as 'berita' | 'pengumuman' })}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all duration-200 hover:border-green-400"
               >
                 <option value="berita">Berita</option>
                 <option value="pengumuman">Pengumuman</option>
@@ -159,35 +161,38 @@ const BeritaForm = ({ isOpen, onClose, beritaToEdit }: BeritaFormProps) => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                Ringkasan
-              </label>
+              <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300 mb-1">
+                <AlignLeft className="w-4 h-4" />
+                <label className="block text-sm font-medium">Ringkasan</label>
+              </div>
               <textarea
                 value={formData.ringkasan}
                 onChange={(e) => setFormData({ ...formData, ringkasan: e.target.value })}
                 rows={3}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all duration-200 hover:border-green-400"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                Isi
-              </label>
+              <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300 mb-1">
+                <FileText className="w-4 h-4" />
+                <label className="block text-sm font-medium">Isi</label>
+              </div>
               <textarea
                 value={formData.isi}
                 onChange={(e) => setFormData({ ...formData, isi: e.target.value })}
                 rows={6}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                className="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white transition-all duration-200 hover:border-green-400"
                 required
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                Gambar
-              </label>
+              <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300 mb-1">
+                <ImageIcon className="w-4 h-4" />
+                <label className="block text-sm font-medium">Gambar</label>
+              </div>
               <input
                 type="file"
                 id="gambar"
@@ -200,14 +205,14 @@ const BeritaForm = ({ isOpen, onClose, beritaToEdit }: BeritaFormProps) => {
               <button
                 type="button"
                 onClick={onClose}
-                className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+                className="px-6 py-2.5 text-sm font-medium text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 transition-all duration-200 transform hover:scale-105"
               >
                 Batal
               </button>
               <button
                 type="submit"
                 disabled={loading}
-                className="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-6 py-2.5 text-sm font-medium text-white bg-gradient-to-r from-green-600 to-green-500 rounded-lg hover:from-green-700 hover:to-green-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-105 shadow-md hover:shadow-lg"
               >
                 {loading ? 'Menyimpan...' : 'Simpan'}
               </button>
