@@ -24,12 +24,27 @@ const MediaManager = ({ kategori, onClose }: MediaManagerProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedMedia, setSelectedMedia] = useState<MediaItem | null>(null);
   const [copiedId, setCopiedId] = useState<string | null>(null);
-  const [fileName, setFileName] = useState('');
+  const [fileName, setFileName] = useState("");
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   useEffect(() => {
     fetchMedia();
   }, [kategori]);
+
+  useEffect(() => {
+    // Updated: Close modal on "Escape" key press
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        if (selectedMedia) {
+          setSelectedMedia(null);
+        } else {
+          onClose();
+        }
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [selectedMedia, onClose]);
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -38,7 +53,7 @@ const MediaManager = ({ kategori, onClose }: MediaManagerProps) => {
     // Validasi ukuran file (50MB)
     if (file.size > 50 * 1024 * 1024) {
       toast.error("Ukuran file terlalu besar. Maksimal 50MB");
-      event.target.value = '';
+      event.target.value = "";
       setSelectedFile(null);
       return;
     }
@@ -46,7 +61,7 @@ const MediaManager = ({ kategori, onClose }: MediaManagerProps) => {
     // Validasi tipe file
     if (!file.type.startsWith("image/") && !file.type.startsWith("video/")) {
       toast.error("Format file tidak didukung");
-      event.target.value = '';
+      event.target.value = "";
       setSelectedFile(null);
       return;
     }
@@ -54,7 +69,7 @@ const MediaManager = ({ kategori, onClose }: MediaManagerProps) => {
     setSelectedFile(file);
     // Set nama file default dari file yang dipilih
     if (!fileName) {
-      setFileName(file.name.split('.')[0]);
+      setFileName(file.name.split(".")[0]);
     }
   };
 
@@ -69,7 +84,7 @@ const MediaManager = ({ kategori, onClose }: MediaManagerProps) => {
     try {
       // Upload file ke storage
       const fileExt = selectedFile.name.split(".").pop();
-      const safeFileName = fileName.replace(/[^a-z0-9]/gi, '-').toLowerCase();
+      const safeFileName = fileName.replace(/[^a-z0-9]/gi, "-").toLowerCase();
       const filePath = `${kategori}/${safeFileName}-${Date.now()}.${fileExt}`;
 
       const { error: uploadError } = await supabase.storage
@@ -106,7 +121,7 @@ const MediaManager = ({ kategori, onClose }: MediaManagerProps) => {
     } finally {
       setIsUploading(false);
       setSelectedFile(null);
-      setFileName('');
+      setFileName("");
     }
   };
 
@@ -175,25 +190,36 @@ const MediaManager = ({ kategori, onClose }: MediaManagerProps) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+    <div
+      className="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex items-center justify-center p-6 z-50"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) {
+          if (selectedMedia) {
+            setSelectedMedia(null);
+          } else {
+            onClose();
+          }
+        }
+      }}
+    >
       {selectedMedia && (
         <div
           className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 animate-fade-in"
           onClick={() => setSelectedMedia(null)}
         >
-          <div className="relative max-w-[90vw] max-h-[90vh] animate-scale-in bg-white dark:bg-gray-800 p-4 rounded-xl shadow-2xl">
+          <div className="relative max-w-[90vw] max-h-[90vh] animate-scale-in bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-700 p-6 rounded-2xl shadow-2xl">
             <div className="relative">
               {selectedMedia.type === "image" ? (
                 <img
                   src={selectedMedia.url}
                   alt={selectedMedia.caption}
-                  className="max-w-full max-h-[90vh] object-contain"
+                  className="max-w-full max-h-[90vh] object-contain rounded-lg"
                 />
               ) : (
                 <video
                   src={selectedMedia.url}
                   controls
-                  className="max-w-full max-h-[90vh] object-contain"
+                  className="max-w-full max-h-[90vh] object-contain rounded-lg"
                 />
               )}
               <button
@@ -209,9 +235,9 @@ const MediaManager = ({ kategori, onClose }: MediaManagerProps) => {
           </div>
         </div>
       )}
-      <div className="bg-white dark:bg-gray-800 rounded-xl p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl p-8 max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-xl">
         <div className="flex justify-between items-center mb-6">
-          <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <h3 className="text-3xl font-extrabold text-gray-900 dark:text-white">
             {kategori === "tenda" && "Media Tenda & Kursi"}
             {kategori === "combine" && "Media Combine Harvester"}
             {kategori === "internet" && "Media Layanan Internet"}
@@ -225,9 +251,12 @@ const MediaManager = ({ kategori, onClose }: MediaManagerProps) => {
         </div>
 
         {user && (
-          <div className="mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+          <div className="mb-6 p-6 bg-gradient-to-r from-green-50 to-blue-50 dark:from-gray-700 dark:to-gray-600 rounded-xl shadow-md">
             <div className="mb-4">
-              <label htmlFor="fileName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label
+                htmlFor="fileName"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+              >
                 Nama File
               </label>
               <input
@@ -236,13 +265,13 @@ const MediaManager = ({ kategori, onClose }: MediaManagerProps) => {
                 value={fileName}
                 onChange={(e) => setFileName(e.target.value)}
                 placeholder="Masukkan nama file"
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
               />
             </div>
 
             <div className="flex items-center gap-4">
               <div className="flex-1">
-                <label className="flex items-center justify-center w-full h-32 px-4 transition bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 border-dashed rounded-md appearance-none cursor-pointer hover:border-green-500 dark:hover:border-green-500">
+                <label className="flex items-center justify-center w-full h-32 px-4 transition border-2 rounded-md appearance-none cursor-pointer bg-white dark:bg-gray-800 border-gradient-r from-purple-400 via-pink-500 to-red-500 hover:shadow-lg">
                   {isUploading ? (
                     <div className="flex items-center text-gray-500 dark:text-gray-400">
                       <Loader className="w-6 h-6 animate-spin" />
@@ -251,7 +280,9 @@ const MediaManager = ({ kategori, onClose }: MediaManagerProps) => {
                   ) : (
                     <div className="flex items-center text-gray-500 dark:text-gray-400">
                       <Plus className="w-6 h-6" />
-                      <span className="ml-2">{selectedFile ? selectedFile.name : 'Pilih File'}</span>
+                      <span className="ml-2">
+                        {selectedFile ? selectedFile.name : "Pilih File"}
+                      </span>
                     </div>
                   )}
                   <input
@@ -266,9 +297,13 @@ const MediaManager = ({ kategori, onClose }: MediaManagerProps) => {
               <button
                 onClick={handleUpload}
                 disabled={isUploading || !selectedFile || !fileName.trim()}
-                className={`px-4 py-2 h-12 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 ${isUploading || !selectedFile || !fileName.trim() ? 'bg-gray-400 cursor-not-allowed' : 'bg-green-600 hover:bg-green-700 focus:ring-green-500'} text-white`}
+                className={`px-4 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 ${
+                  isUploading || !selectedFile || !fileName.trim()
+                    ? "bg-gray-400 cursor-not-allowed"
+                    : "bg-green-600 hover:bg-green-700 focus:ring-green-500"
+                } text-white shadow-md transition-transform duration-200 hover:scale-105`}
               >
-                {isUploading ? 'Mengupload...' : 'Upload'}
+                {isUploading ? "Mengupload..." : "Upload"}
               </button>
             </div>
           </div>
@@ -294,24 +329,24 @@ const MediaManager = ({ kategori, onClose }: MediaManagerProps) => {
             )}
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
             {media.map((item) => (
               <div key={item.id} className="relative group">
                 <div
                   onClick={() => setSelectedMedia(item)}
-                  className="cursor-pointer transition-all duration-300 transform hover:scale-105 hover:shadow-lg rounded-lg overflow-hidden group relative"
+                  className="cursor-pointer transition transform hover:scale-105 rounded-xl overflow-hidden shadow-md hover:shadow-xl"
                 >
                   {item.type === "image" ? (
                     <img
                       src={item.url}
                       alt={item.caption}
-                      className="w-full h-48 object-cover rounded-lg"
+                      className="w-full h-48 object-cover"
                     />
                   ) : (
                     <video
                       src={item.url}
                       controls
-                      className="w-full h-48 object-cover rounded-lg"
+                      className="w-full h-48 object-cover"
                     />
                   )}
                 </div>
@@ -354,7 +389,7 @@ const MediaManager = ({ kategori, onClose }: MediaManagerProps) => {
                 {user && (
                   <button
                     onClick={() => handleDelete(item.id, item.url)}
-                    className="absolute top-2 right-2 p-2 bg-red-600 text-white rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 transform hover:scale-110 hover:bg-red-700 z-10"
+                    className="absolute top-2 right-2 p-2 bg-red-600 text-white rounded-full opacity-0 group-hover:opacity-100 transition duration-300 transform hover:scale-110 hover:bg-red-700 z-10"
                   >
                     <X className="w-4 h-4" />
                   </button>

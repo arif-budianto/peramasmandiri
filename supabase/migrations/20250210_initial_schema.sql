@@ -1,7 +1,7 @@
--- Enable UUID extension
+-- Aktifkan ekstensi UUID
 create extension if not exists "uuid-ossp";
 
--- Create tables
+-- Buat tabel
 create table if not exists public.berita (
     id uuid default uuid_generate_v4() primary key,
     judul text not null,
@@ -24,11 +24,11 @@ create table if not exists public.galeri (
     updated_at timestamp with time zone default timezone('utc'::text, now()) not null
 );
 
--- Enable Row Level Security
+-- Aktifkan Keamanan Tingkat Baris
 alter table public.berita enable row level security;
 alter table public.galeri enable row level security;
 
--- Create policies for berita table
+-- Buat kebijakan untuk tabel berita
 create policy "Berita dapat dibaca oleh semua orang"
 on public.berita for select
 to public
@@ -49,7 +49,7 @@ on public.berita for delete
 to authenticated
 using (true);
 
--- Create policies for galeri table
+-- Buat kebijakan untuk tabel galeri
 create policy "Galeri dapat dibaca oleh semua orang"
 on public.galeri for select
 to public
@@ -70,11 +70,11 @@ on public.galeri for delete
 to authenticated
 using (true);
 
--- Create storage bucket for media
+-- Buat bucket penyimpanan untuk media
 insert into storage.buckets (id, name, public)
 values ('media', 'media', true);
 
--- Create storage policies
+-- Buat kebijakan penyimpanan
 create policy "Media dapat diakses oleh semua orang"
 on storage.objects for select
 to public
