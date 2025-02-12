@@ -18,6 +18,21 @@ interface BeritaProps {
 
 import { supabase } from '../lib/supabase';
 
+const generateSlug = (text: string, id?: string) => {
+  const baseSlug = text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '') // Hapus karakter spesial kecuali huruf, angka, spasi, dan tanda hubung
+    .replace(/\s+/g, '-') // Ganti spasi dengan tanda hubung
+    .replace(/-+/g, '-') // Hapus tanda hubung berlebih
+    .replace(/^-+/, '') // Hapus tanda hubung di awal
+    .replace(/-+$/, '') // Hapus tanda hubung di akhir
+    .trim(); // Hapus spasi di awal dan akhir
+
+  // Jika ada ID, gunakan itu sebagai suffix, jika tidak gunakan timestamp
+  const suffix = id || Date.now().toString();
+  return `${baseSlug}-${suffix}`;
+};
+
 const BeritaPengumuman = () => {
   const { user } = useAuth();
   const [berita, setBerita] = useState<BeritaProps[]>([]);
@@ -51,10 +66,10 @@ const BeritaPengumuman = () => {
             judul: item.judul || '',
             tanggal: item.created_at || new Date().toISOString(),
             ringkasan: item.ringkasan || '',
-            gambar: item.gambar || '',
+            gambar: item.gambar || 'https://peramasmandiri.net/Logo%20Bumdes%203.png',
             kategori: item.kategori || 'berita',
             isi: item.isi || '',
-            slug: item.slug || ''
+            slug: item.slug || generateSlug(item.judul, item.id)
           };
         });
         console.log('Mapped data:', mappedData); // Debug log

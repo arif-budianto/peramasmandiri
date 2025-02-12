@@ -102,53 +102,40 @@ const BeritaDetail: React.FC = () => {
       <Helmet>
         <title>{berita.judul} - BUMDesa Peramas Mandiri</title>
         <meta name="description" content={berita.ringkasan} />
-
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        
         {/* Meta Tags untuk Open Graph */}
         <meta property="og:site_name" content="BUMDesa Peramas Mandiri" />
-        <meta property="og:title" content={berita.judul} />
+        <meta property="og:locale" content="id_ID" />
+        <meta property="og:title" content={`${berita.judul} - BUMDesa Peramas Mandiri`} />
         <meta property="og:description" content={berita.ringkasan} />
-        <meta
-          property="og:image"
-          content={
-            berita.gambar || "https://peramasmandiri.net/Logo%20Bumdes%203.png"
-          }
-        />
-        <meta
-          property="og:image:secure_url"
-          content={
-            berita.gambar || "https://peramasmandiri.net/Logo%20Bumdes%203.png"
-          }
-        />
+        <meta property="og:image" content={berita.gambar || "https://peramasmandiri.net/Logo%20Bumdes%203.png"} />
+        <meta property="og:image:secure_url" content={berita.gambar || "https://peramasmandiri.net/Logo%20Bumdes%203.png"} />
+        <meta property="og:image:type" content="image/png" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
         <meta property="og:image:alt" content={berita.judul} />
-        <meta
-          property="og:url"
-          content={`https://peramasmandiri.net/${berita.kategori}/${berita.slug}`}
-        />
+        <meta property="og:url" content={`https://peramasmandiri.net/${berita.kategori}/${berita.slug}`} />
         <meta property="og:type" content="article" />
-
+        
         {/* Meta Tags untuk Twitter */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:site" content="@peramasmandiri" />
-        <meta name="twitter:title" content={berita.judul} />
+        <meta name="twitter:creator" content="@peramasmandiri" />
+        <meta name="twitter:title" content={`${berita.judul} - BUMDesa Peramas Mandiri`} />
         <meta name="twitter:description" content={berita.ringkasan} />
-        <meta
-          name="twitter:image"
-          content={
-            berita.gambar || "https://peramasmandiri.net/Logo%20Bumdes%203.png"
-          }
-        />
+        <meta name="twitter:image" content={berita.gambar || "https://peramasmandiri.net/Logo%20Bumdes%203.png"} />
         <meta name="twitter:image:alt" content={berita.judul} />
+        <meta name="twitter:domain" content="peramasmandiri.net" />
 
         {/* Tambahan meta tags untuk SEO dan sharing */}
-        <link
-          rel="canonical"
-          href={`https://peramasmandiri.net/${berita.kategori}/${berita.slug}`}
-        />
+        <link rel="canonical" href={`https://peramasmandiri.net/${berita.kategori}/${berita.slug}`} />
         <meta name="author" content="BUMDesa Peramas Mandiri" />
         <meta name="robots" content="index, follow" />
         <meta property="article:published_time" content={berita.created_at} />
+        <meta property="article:section" content={berita.kategori === 'berita' ? 'Berita' : 'Pengumuman'} />
+        <meta property="article:author" content="https://peramasmandiri.net" />
+        <meta property="article:publisher" content="https://peramasmandiri.net" />
         <meta
           property="article:section"
           content={berita.kategori === "berita" ? "Berita" : "Pengumuman"}
