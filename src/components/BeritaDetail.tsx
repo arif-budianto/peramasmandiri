@@ -26,22 +26,45 @@ const BeritaDetail: React.FC = () => {
     const fetchBerita = async () => {
       try {
         setLoading(true);
-        const { data, error } = await supabase
+        
+        // Coba cari berdasarkan slug terlebih dahulu
+        let { data, error } = await supabase
           .from("berita")
           .select("*")
           .eq("slug", slug)
           .single();
 
+        // Jika tidak ditemukan dengan slug, coba cari berdasarkan ID
         if (error) {
-          throw error;
+          console.log('Tidak ditemukan dengan slug, mencoba dengan ID...');
+          ({ data, error } = await supabase
+            .from("berita")
+            .select("*")
+            .eq("id", slug)
+            .single());
         }
 
-        if (data) {
-          setBerita(data);
+        if (error) {
+          console.error('Error saat mengambil berita:', error);
+          throw new Error('Berita tidak ditemukan');
+        }
+
+        if (!data) {
+          throw new Error('Berita tidak ditemukan');
+        }
+
+        console.log('Berita ditemukan:', data);
+        setBerita(data);
+        
+        // Update URL dengan slug yang benar jika diperlukan
+        if (data.slug && data.slug !== slug) {
+          const newPath = `/${data.kategori}/${data.slug}`;
+          window.history.replaceState(null, '', newPath);
         }
       } catch (error: any) {
-        toast.error("Gagal memuat berita: " + error.message);
-        navigate("/");
+        console.error('Error:', error);
+        toast.error(error.message || 'Gagal memuat berita');
+        setTimeout(() => navigate('/'), 2000);
       } finally {
         setLoading(false);
         window.scrollTo(0, 0);

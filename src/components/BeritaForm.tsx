@@ -14,6 +14,7 @@ interface BeritaFormProps {
     isi: string;
     kategori: 'berita' | 'pengumuman';
     gambar?: string;
+    slug?: string;
   };
 }
 
@@ -27,15 +28,19 @@ const BeritaForm = ({ isOpen, onClose, beritaToEdit }: BeritaFormProps) => {
     gambar: beritaToEdit?.gambar || '',
   });
 
-  const generateSlug = (text: string) => {
-    const slug = text
+  const generateSlug = (text: string, id?: string) => {
+    const baseSlug = text
       .toLowerCase()
-      .replace(/[^a-z0-9\s-]/g, '') // Hapus karakter spesial
+      .replace(/[^a-z0-9\s-]/g, '') // Hapus karakter spesial kecuali huruf, angka, spasi, dan tanda hubung
       .replace(/\s+/g, '-') // Ganti spasi dengan tanda hubung
       .replace(/-+/g, '-') // Hapus tanda hubung berlebih
+      .replace(/^-+/, '') // Hapus tanda hubung di awal
+      .replace(/-+$/, '') // Hapus tanda hubung di akhir
       .trim(); // Hapus spasi di awal dan akhir
-    
-    return `${slug}-${Date.now()}`; // Tambahkan timestamp untuk memastikan keunikan
+
+    // Jika ada ID, gunakan itu sebagai suffix, jika tidak gunakan timestamp
+    const suffix = id || Date.now().toString();
+    return `${baseSlug}-${suffix}`;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -69,7 +74,6 @@ const BeritaForm = ({ isOpen, onClose, beritaToEdit }: BeritaFormProps) => {
       }
 
       const now = new Date().toISOString();
-      const slug = generateSlug(formData.judul);
       const beritaData: any = {
         judul: formData.judul.trim(),
         ringkasan: formData.ringkasan.trim(),
@@ -77,7 +81,7 @@ const BeritaForm = ({ isOpen, onClose, beritaToEdit }: BeritaFormProps) => {
         kategori: formData.kategori as 'berita' | 'pengumuman',
         gambar: gambarUrl || '',
         updated_at: now,
-        slug: slug
+        slug: beritaToEdit?.slug || generateSlug(formData.judul, beritaToEdit?.id) // Gunakan slug yang ada jika mengedit, atau buat baru dengan ID jika ada
       };
 
       // Hanya tambahkan created_at untuk data baru

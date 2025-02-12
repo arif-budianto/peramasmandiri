@@ -13,6 +13,7 @@ interface BeritaProps {
   gambar: string;
   kategori: "berita" | "pengumuman";
   isi: string;
+  slug: string;
 }
 
 import { supabase } from '../lib/supabase';
@@ -52,7 +53,8 @@ const BeritaPengumuman = () => {
             ringkasan: item.ringkasan || '',
             gambar: item.gambar || '',
             kategori: item.kategori || 'berita',
-            isi: item.isi || ''
+            isi: item.isi || '',
+            slug: item.slug || ''
           };
         });
         console.log('Mapped data:', mappedData); // Debug log
@@ -215,7 +217,7 @@ const BeritaPengumuman = () => {
                     {item.ringkasan}
                   </p>
                   <Link
-                    to={`/pengumuman/${item.id}`}
+                    to={`/${item.kategori}/${item.slug || item.id}`}
                     className="flex items-center text-green-600 dark:text-green-500 hover:text-green-700 transition-colors duration-300 group"
                     onClick={() => window.scrollTo(0, 0)}
                   >
