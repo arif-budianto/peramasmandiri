@@ -13,6 +13,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const scrollToSection = useScrollToSection();
+  const [isDarkMode, setIsDarkMode] = useState<boolean>(false);
 
   const handleNavigation = (
     e: React.MouseEvent<HTMLAnchorElement>,
@@ -34,11 +35,27 @@ const Navbar = () => {
   };
 
   const toggleDarkMode = () => {
-    const currentMode = localStorage.getItem("theme");
-    const newMode = currentMode === "dark" ? "light" : "dark";
-    localStorage.setItem("theme", newMode);
-    document.documentElement.classList.toggle("dark", newMode === "dark");
+    setIsDarkMode(!isDarkMode);
+    document.documentElement.classList.toggle("dark", !isDarkMode);
   };
+
+  useEffect(() => {
+    const hours = new Date().getHours();
+    const isNight = hours >= 18 || hours < 6;
+    document.documentElement.classList.toggle("dark", isNight);
+    setIsDarkMode(isNight);
+  }, []);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      const hours = new Date().getHours();
+      const isNight = hours >= 18 || hours < 6;
+      document.documentElement.classList.toggle("dark", isNight);
+      setIsDarkMode(isNight);
+    }, 60000); // 1 menit
+
+    return () => clearInterval(intervalId);
+  }, []);
 
   useEffect(() => {
     // Cek status autentikasi saat komponen dimount
@@ -54,13 +71,6 @@ const Navbar = () => {
     });
 
     return () => subscription.unsubscribe();
-  }, []);
-
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme");
-    if (savedTheme) {
-      document.documentElement.classList.toggle("dark", savedTheme === "dark");
-    }
   }, []);
 
   return (
@@ -145,11 +155,7 @@ const Navbar = () => {
                 onClick={toggleDarkMode}
                 className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
               >
-                {localStorage.getItem("theme") === "dark" ? (
-                  <Sun className="h-5 w-5" />
-                ) : (
-                  <Moon className="h-5 w-5" />
-                )}
+                {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
               </button>
             </div>
 
@@ -159,11 +165,7 @@ const Navbar = () => {
                 onClick={toggleDarkMode}
                 className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
               >
-                {localStorage.getItem("theme") === "dark" ? (
-                  <Sun className="h-5 w-5" />
-                ) : (
-                  <Moon className="h-5 w-5" />
-                )}
+                {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
               </button>
               <button
                 onClick={() => setIsOpen(!isOpen)}
