@@ -24,11 +24,6 @@ const Footer = () => {
     }
   };
 
-  const handleRentalNavigation = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    navigate("/layanan");
-  };
-
   const handleProfileNavigation = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     if (location.pathname !== "/profil") {
