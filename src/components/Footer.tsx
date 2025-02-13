@@ -24,13 +24,6 @@ const Footer = () => {
     }
   };
 
-  const handleProfileNavigation = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    if (location.pathname !== "/profil") {
-      navigate("/profil");
-    }
-  };
-
   return (
     <footer className="bg-gray-900 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -116,7 +109,7 @@ const Footer = () => {
               <li>
                 <a
                   href="#profil"
-                  onClick={handleProfileNavigation}
+                  onClick={(e) => handleNavigation(e, "profil")}
                   className="text-gray-400 hover:text-white"
                 >
                   Profil
