@@ -1,9 +1,11 @@
-import { Trophy, Target, TrendingUp } from "lucide-react";
+import { Trophy, Target, TrendingUp, X } from "lucide-react";
+import { useState, useEffect } from "react";
 
 interface PengurusProps {
   nama: string;
   jabatan: string;
   foto: string;
+  deskripsi: string;
 }
 
 const pengurusList: PengurusProps[] = [
@@ -11,25 +13,66 @@ const pengurusList: PengurusProps[] = [
     nama: "INDRA KURNIAWAN",
     jabatan: "Direktur",
     foto: "https://i.imgur.com/GW3JJq8.png?1",
+    deskripsi: "Sebagai Direktur BUMDesa Peramas Mandiri, bertanggung jawab dalam memimpin dan mengembangkan strategi bisnis yang inovatif untuk kemajuan ekonomi desa. Memiliki pengalaman lebih dari 5 tahun dalam manajemen bisnis desa dan pengembangan komunitas.",
   },
   {
     nama: "SUBANDI",
     jabatan: "Sekretaris",
     foto: "https://i.imgur.com/nRFeP7p.png?1",
+    deskripsi: "Menjabat sebagai Sekretaris BUMDesa, bertanggung jawab dalam pengelolaan administrasi dan dokumentasi. Berperan penting dalam memastikan kelancaran komunikasi antar divisi dan pemangku kepentingan.",
   },
   {
     nama: "EKO ALFIANSYAH",
     jabatan: "Bendahara",
     foto: "https://i.imgur.com/NLWTp9S.png?1",
+    deskripsi: "Sebagai Bendahara BUMDesa, mengelola keuangan dan pencatatan dengan teliti dan transparan. Berpengalaman dalam manajemen keuangan dan pelaporan keuangan desa.",
   },
   {
     nama: "ARIFBUDIANTO",
     jabatan: "IT",
     foto: "https://i.imgur.com/eLmCYJz.jpg",
+    deskripsi: "Profesional berpengalaman dalam Network Engineering dan Pengembangan Web, spesialisasi infrastruktur jaringan enterprise dan konfigurasi perangkat Mikrotik dan OLT. Mengintegrasikan pengembangan web dan arsitektur jaringan untuk solusi teknologi efisien. Berkomitmen menjaga keandalan IT dan optimalkan performa jaringan.",
   },
 ];
 
 const ManajemenProfil = () => {
+  const [selectedPengurus, setSelectedPengurus] = useState<PengurusProps | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Handle ESC key press
+  useEffect(() => {
+    const handleEscKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        closeModal();
+      }
+    };
+
+    if (isModalOpen) {
+      document.addEventListener("keydown", handleEscKey);
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleEscKey);
+    };
+  }, [isModalOpen]);
+
+  const handlePengurusClick = (pengurus: PengurusProps) => {
+    setSelectedPengurus(pengurus);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedPengurus(null);
+  };
+
+  // Handle overlay click
+  const handleOverlayClick = (event: React.MouseEvent<HTMLDivElement>) => {
+    if (event.target === event.currentTarget) {
+      closeModal();
+    }
+  };
+
   return (
     <section
       id="profil"
@@ -191,7 +234,8 @@ const ManajemenProfil = () => {
             {pengurusList.map((pengurus, index) => (
               <div
                 key={index}
-                className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow transform hover:scale-105 transition duration-300 text-center"
+                className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow transform hover:scale-105 transition duration-300 text-center cursor-pointer"
+                onClick={() => handlePengurusClick(pengurus)}
               >
                 <img
                   src={pengurus.foto}
@@ -209,6 +253,45 @@ const ManajemenProfil = () => {
           </div>
         </div>
       </div>
+
+      {/* Modal */}
+      {isModalOpen && selectedPengurus && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50"
+          onClick={handleOverlayClick}
+        >
+          <div className="relative w-full max-w-2xl bg-white dark:bg-gray-900 rounded-2xl shadow-xl transform transition-all">
+            {/* Close button */}
+            <button
+              onClick={closeModal}
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+            >
+              <X className="w-6 h-6" />
+            </button>
+
+            <div className="p-8">
+              <div className="flex flex-col md:flex-row items-center md:items-start space-y-4 md:space-y-0 md:space-x-6">
+                <img
+                  src={selectedPengurus.foto}
+                  alt={selectedPengurus.nama}
+                  className="w-40 h-40 rounded-full object-cover border-4 border-green-500"
+                />
+                <div className="flex-1 text-center md:text-left">
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+                    {selectedPengurus.nama}
+                  </h3>
+                  <p className="text-lg text-green-600 dark:text-green-400 mb-4">
+                    {selectedPengurus.jabatan}
+                  </p>
+                  <p className="text-gray-600 dark:text-gray-300 text-base leading-relaxed">
+                    {selectedPengurus.deskripsi}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
