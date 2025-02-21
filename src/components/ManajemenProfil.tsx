@@ -29,7 +29,7 @@ const pengurusList: PengurusProps[] = [
   },
   {
     nama: "ARIF BUDIANTO",
-    jabatan: "IT",
+    jabatan: "IT Engineer",
     foto: "https://i.imgur.com/eLmCYJz.jpg",
     deskripsi: "Profesional berpengalaman dalam Network Engineering dan Pengembangan Web, spesialisasi infrastruktur jaringan enterprise dan konfigurasi perangkat Mikrotik dan OLT. Mengintegrasikan pengembangan web dan arsitektur jaringan untuk solusi teknologi efisien. Berkomitmen menjaga keandalan IT dan optimalkan performa jaringan.",
   },
