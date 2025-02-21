@@ -108,7 +108,9 @@ ${formData.pesan}`;
               </h3>
               <div className="space-y-6">
                 <div className="flex items-start">
-                  <MapPin className="h-16 w-16 text-green-600 dark:text-green-500 mr-4" />
+                  <div className="flex-shrink-0 mr-4">
+                    <MapPin className="h-6 w-6 text-green-600 dark:text-green-500" />
+                  </div>
                   <div>
                     <h4 className="font-semibold text-gray-900 dark:text-white">
                       Alamat
@@ -120,7 +122,9 @@ ${formData.pesan}`;
                   </div>
                 </div>
                 <div className="flex items-start">
-                  <Phone className="h-6 w-6 text-green-600 dark:text-green-500 mr-4" />
+                  <div className="flex-shrink-0 mr-4">
+                    <Phone className="h-6 w-6 text-green-600 dark:text-green-500" />
+                  </div>
                   <div>
                     <h4 className="font-semibold text-gray-900 dark:text-white">
                       Telepon
@@ -131,7 +135,9 @@ ${formData.pesan}`;
                   </div>
                 </div>
                 <div className="flex items-start">
-                  <Mail className="h-6 w-6 text-green-600 dark:text-green-500 mr-4" />
+                  <div className="flex-shrink-0 mr-4">
+                    <Mail className="h-6 w-6 text-green-600 dark:text-green-500" />
+                  </div>
                   <div>
                     <h4 className="font-semibold text-gray-900 dark:text-white">
                       Email
