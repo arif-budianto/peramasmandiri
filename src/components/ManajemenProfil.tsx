@@ -1,4 +1,4 @@
-import { Trophy, Target, TrendingUp, X } from "lucide-react";
+import { Trophy, Target, TrendingUp, X, ChevronDown, ChevronUp } from "lucide-react";
 import { useState, useEffect } from "react";
 
 interface PengurusProps {
@@ -28,7 +28,7 @@ const pengurusList: PengurusProps[] = [
     deskripsi: "Sebagai Bendahara BUMDesa, mengelola keuangan dan pencatatan dengan teliti dan transparan. Berpengalaman dalam manajemen keuangan dan pelaporan keuangan desa.",
   },
   {
-    nama: "ARIFBUDIANTO",
+    nama: "ARIF BUDIANTO",
     jabatan: "IT",
     foto: "https://i.imgur.com/eLmCYJz.jpg",
     deskripsi: "Profesional berpengalaman dalam Network Engineering dan Pengembangan Web, spesialisasi infrastruktur jaringan enterprise dan konfigurasi perangkat Mikrotik dan OLT. Mengintegrasikan pengembangan web dan arsitektur jaringan untuk solusi teknologi efisien. Berkomitmen menjaga keandalan IT dan optimalkan performa jaringan.",
@@ -38,6 +38,8 @@ const pengurusList: PengurusProps[] = [
 const ManajemenProfil = () => {
   const [selectedPengurus, setSelectedPengurus] = useState<PengurusProps | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showAllDocuments, setShowAllDocuments] = useState(false);
+  const [showAllPengurus, setShowAllPengurus] = useState(false);
 
   // Handle ESC key press
   useEffect(() => {
@@ -154,7 +156,12 @@ const ManajemenProfil = () => {
           <h2 className="text-3xl font-bold mb-6 text-center text-gray-900 dark:text-white">
             Dokumen BUMDesa
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-8">
+          <div className={`grid grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-8 ${
+            !showAllDocuments && 'max-h-[280px] overflow-hidden md:max-h-none md:overflow-visible'
+          }`}>
+            {/* Grid columns modified for mobile - always 2 columns */}
+            {/* First two documents will always be visible */}
+            {/* Modified grid-cols-1 to grid-cols-2 for mobile */}
             <div className="col-span-1 text-center bg-white dark:bg-gray-900 p-6 rounded-2xl shadow hover:shadow-xl transition">
               <h3 className="text-gray-900 dark:text-white">SK BUMDesa</h3>
               <img
@@ -183,7 +190,7 @@ const ManajemenProfil = () => {
                 Lihat Dokumen
               </a>
             </div>
-            <div className="col-span-1 text-center bg-white dark:bg-gray-900 p-6 rounded-2xl shadow hover:shadow-xl transition">
+            <div className={`col-span-1 text-center bg-white dark:bg-gray-900 p-6 rounded-2xl shadow hover:shadow-xl transition ${!showAllDocuments && 'hidden md:block'}`}>
               <h3 className="text-gray-900 dark:text-white">Akta Pendirian</h3>
               <img
                 src="https://i.imgur.com/AaPv8W7.png"
@@ -197,7 +204,7 @@ const ManajemenProfil = () => {
                 Lihat Dokumen
               </a>
             </div>
-            <div className="col-span-1 text-center bg-white dark:bg-gray-900 p-6 rounded-2xl shadow hover:shadow-xl transition">
+            <div className={`col-span-1 text-center bg-white dark:bg-gray-900 p-6 rounded-2xl shadow hover:shadow-xl transition ${!showAllDocuments && 'hidden md:block'}`}>
               <h3 className="text-gray-900 dark:text-white">AHU</h3>
               <img
                 src="https://i.imgur.com/0UKtkjn.png"
@@ -211,7 +218,7 @@ const ManajemenProfil = () => {
                 Lihat Dokumen
               </a>
             </div>
-            <div className="col-span-1 text-center bg-white dark:bg-gray-900 p-6 rounded-2xl shadow hover:shadow-xl transition">
+            <div className={`col-span-1 text-center bg-white dark:bg-gray-900 p-6 rounded-2xl shadow hover:shadow-xl transition ${!showAllDocuments && 'hidden md:block'}`}>
               <h3 className="text-gray-900 dark:text-white">NIB</h3>
               <img
                 src="https://i.imgur.com/L3qvJYx.png"
@@ -223,6 +230,19 @@ const ManajemenProfil = () => {
               </a>
             </div>
           </div>
+          {/* Tombol untuk menampilkan/menyembunyikan dokumen */}
+          <div className="text-center mt-4 mb-8 md:hidden">
+            <button
+              onClick={() => setShowAllDocuments(!showAllDocuments)}
+              className="inline-flex items-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+            >
+              {showAllDocuments ? (
+                <><ChevronUp className="w-5 h-5 mr-2" /> Sembunyikan Dokumen</>
+              ) : (
+                <><ChevronDown className="w-5 h-5 mr-2" /> Lihat Semua Dokumen</>
+              )}
+            </button>
+          </div>
         </div>
 
         {/* Pengurus */}
@@ -230,8 +250,9 @@ const ManajemenProfil = () => {
           <h2 className="text-3xl font-bold mb-6 text-center text-gray-900 dark:text-white">
             Pengurus BUMDesa
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {pengurusList.map((pengurus, index) => (
+          <div className={`grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-8 ${
+            !showAllPengurus && 'max-h-[600px] overflow-hidden md:max-h-none md:overflow-visible'}`}>
+            {pengurusList.slice(0, showAllPengurus ? pengurusList.length : 4).map((pengurus, index) => (
               <div
                 key={index}
                 className="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow transform hover:scale-105 transition duration-300 text-center cursor-pointer"
@@ -251,6 +272,21 @@ const ManajemenProfil = () => {
               </div>
             ))}
           </div>
+          {/* Tombol untuk menampilkan/menyembunyikan pengurus tambahan */}
+          {pengurusList.length > 4 && (
+            <div className="text-center mt-4 md:hidden">
+              <button
+                onClick={() => setShowAllPengurus(!showAllPengurus)}
+                className="inline-flex items-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
+              >
+                {showAllPengurus ? (
+                  <><ChevronUp className="w-5 h-5 mr-2" /> Sembunyikan Pengurus</>
+                ) : (
+                  <><ChevronDown className="w-5 h-5 mr-2" /> Lihat Semua Pengurus</>
+                )}
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
