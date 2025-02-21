@@ -13,7 +13,7 @@ const pengurusList: PengurusProps[] = [
     nama: "INDRA KURNIAWAN",
     jabatan: "Direktur",
     foto: "https://i.imgur.com/GW3JJq8.png?1",
-    deskripsi: "Sebagai Direktur BUMDesa Peramas Mandiri, bertanggung jawab dalam memimpin dan mengembangkan strategi bisnis yang inovatif untuk kemajuan ekonomi desa. Memiliki pengalaman lebih dari 5 tahun dalam manajemen bisnis desa dan pengembangan komunitas.",
+    deskripsi: "Sebagai Direktur BUMDesa Peramas Mandiri, bertanggung jawab dalam memimpin dan mengembangkan strategi bisnis yang inovatif untuk kemajuan ekonomi desa. Memiliki pengalaman dalam manajemen bisnis desa dan pengembangan komunitas.",
   },
   {
     nama: "SUBANDI",

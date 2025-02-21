@@ -1,6 +1,33 @@
 import { MapPin, Phone, Mail } from "lucide-react";
+import { useState, FormEvent } from "react";
 
 const Contact = () => {
+  const [formData, setFormData] = useState({
+    nama: "",
+    email: "",
+    pesan: ""
+  });
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    
+    const subject = `Pesan dari ${formData.nama} melalui Website Peramas Mandiri`;
+    const body = `Nama: ${formData.nama}
+Email: ${formData.email}
+
+Pesan:
+${formData.pesan}`;
+
+    window.location.href = `mailto:peramasmandiri@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    
+    // Reset form
+    setFormData({
+      nama: "",
+      email: "",
+      pesan: ""
+    });
+  };
+
   return (
     <section
       id="kontak"
@@ -23,7 +50,7 @@ const Contact = () => {
               <h3 className="text-xl font-semibold mb-6 text-gray-900 dark:text-white">
                 Kirim Pesan
               </h3>
-              <form>
+              <form onSubmit={handleSubmit}>
                 <div className="mb-4">
                   <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
                     Nama
@@ -32,6 +59,9 @@ const Contact = () => {
                     type="text"
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-green-500 transition"
                     placeholder="Nama Anda"
+                    value={formData.nama}
+                    onChange={(e) => setFormData({ ...formData, nama: e.target.value })}
+                    required
                   />
                 </div>
                 <div className="mb-4">
@@ -42,6 +72,9 @@ const Contact = () => {
                     type="email"
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-green-500 transition"
                     placeholder="email@example.com"
+                    value={formData.email}
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    required
                   />
                 </div>
                 <div className="mb-4">
@@ -52,6 +85,9 @@ const Contact = () => {
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-green-500 transition"
                     rows={4}
                     placeholder="Tulis pesan Anda"
+                    value={formData.pesan}
+                    onChange={(e) => setFormData({ ...formData, pesan: e.target.value })}
+                    required
                   ></textarea>
                 </div>
                 <button

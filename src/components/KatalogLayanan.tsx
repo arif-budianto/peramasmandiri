@@ -1,4 +1,7 @@
-import { Package, Clock, CheckCircle } from "lucide-react";
+import { Package, Clock, CheckCircle, X } from "lucide-react";
+import { useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 interface LayananProps {
   nama: string;
@@ -6,6 +9,12 @@ interface LayananProps {
   harga: string;
   fitur: string[];
   icon: JSX.Element;
+}
+
+interface FormData {
+  nama: string;
+  alamat: string;
+  tanggal: Date | null;
 }
 
 const daftarLayanan: LayananProps[] = [
@@ -34,7 +43,7 @@ const daftarLayanan: LayananProps[] = [
     icon: <Clock className="h-12 w-12 text-green-600" />,
   },
   {
-    nama: "Layanan Internet",
+    nama: "Internet Desa",
     deskripsi: "Koneksi stabil untuk kebutuhan digital",
     harga: "Mulai dari Rp 160.000/bulan",
     fitur: [
@@ -48,9 +57,35 @@ const daftarLayanan: LayananProps[] = [
 ];
 
 const KatalogLayanan = () => {
-  const getWhatsAppLink = (layanan: LayananProps) => {
-    const message = `Halo, saya tertarik dengan layanan ${layanan.nama} di BUMDesa Peramas Mandiri. Mohon informasi lebih lanjut.`;
-    return `https://wa.me/6281349993773?text=${encodeURIComponent(message)}`;
+  const [showModal, setShowModal] = useState(false);
+  const [selectedLayanan, setSelectedLayanan] = useState<LayananProps | null>(null);
+  const [formData, setFormData] = useState<FormData>({
+    nama: "",
+    alamat: "",
+    tanggal: null,
+  });
+
+  const handlePesanClick = (layanan: LayananProps) => {
+    setSelectedLayanan(layanan);
+    setShowModal(true);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (selectedLayanan) {
+      const message = `Halo, saya ingin memesan layanan ${selectedLayanan.nama}
+      
+Detail Pesanan:
+- Nama: ${formData.nama}
+- Alamat: ${formData.alamat}
+- Tanggal Penggunaan: ${formData.tanggal?.toLocaleDateString('id-ID') || 'Belum ditentukan'}
+
+Mohon informasi lebih lanjut mengenai ketersediaan layanan. Terima kasih.`;
+
+      window.open(`https://wa.me/6281349993773?text=${encodeURIComponent(message)}`, '_blank');
+      setShowModal(false);
+      setFormData({ nama: "", alamat: "", tanggal: null });
+    }
   };
 
   return (
@@ -92,19 +127,86 @@ const KatalogLayanan = () => {
                 </ul>
               </div>
               <div className="p-4 bg-gray-50 dark:bg-gray-600">
-                <a
-                  href={getWhatsAppLink(layanan)}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  onClick={() => handlePesanClick(layanan)}
                   className="block w-full py-2 px-4 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors duration-300 text-center"
                 >
                   Pesan Sekarang
-                </a>
+                </button>
               </div>
             </div>
           ))}
         </div>
       </div>
+
+      {/* Modal Form */}
+      {showModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-8 w-full max-w-md relative">
+            <button
+              onClick={() => setShowModal(false)}
+              className="absolute right-4 top-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+            >
+              <X className="h-6 w-6" />
+            </button>
+
+            <h3 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
+              Form Pemesanan {selectedLayanan?.nama}
+            </h3>
+
+            <form onSubmit={handleSubmit}>
+              <div className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Nama Lengkap
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.nama}
+                    onChange={(e) => setFormData({ ...formData, nama: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Alamat Lengkap
+                  </label>
+                  <textarea
+                    required
+                    value={formData.alamat}
+                    onChange={(e) => setFormData({ ...formData, alamat: e.target.value })}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                    rows={3}
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Tanggal Penggunaan
+                  </label>
+                  <DatePicker
+                    selected={formData.tanggal}
+                    onChange={(date) => setFormData({ ...formData, tanggal: date })}
+                    dateFormat="dd/MM/yyyy"
+                    minDate={new Date()}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                    placeholderText="Pilih tanggal"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition-colors duration-300"
+                >
+                  Kirim Pesan WhatsApp
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </section>
   );
 };
