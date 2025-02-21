@@ -141,7 +141,7 @@ Mohon informasi lebih lanjut mengenai ketersediaan layanan. Terima kasih.`;
 
       {/* Modal Form */}
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/30 backdrop-blur-sm">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-8 w-full max-w-md relative">
             <button
               onClick={() => setShowModal(false)}
@@ -150,14 +150,14 @@ Mohon informasi lebih lanjut mengenai ketersediaan layanan. Terima kasih.`;
               <X className="h-6 w-6" />
             </button>
 
-            <h3 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
+            <h3 className="text-2xl font-bold mb-6 bg-gradient-to-r from-green-600 to-green-400 bg-clip-text text-transparent">
               Form Pemesanan {selectedLayanan?.nama}
             </h3>
 
             <form onSubmit={handleSubmit}>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">
                     Nama Lengkap
                   </label>
                   <input
@@ -165,25 +165,25 @@ Mohon informasi lebih lanjut mengenai ketersediaan layanan. Terima kasih.`;
                     required
                     value={formData.nama}
                     onChange={(e) => setFormData({ ...formData, nama: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                    className="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">
                     Alamat Lengkap
                   </label>
                   <textarea
                     required
                     value={formData.alamat}
                     onChange={(e) => setFormData({ ...formData, alamat: e.target.value })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                    className="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                     rows={3}
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label className="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">
                     Tanggal Penggunaan
                   </label>
                   <DatePicker
@@ -191,14 +191,14 @@ Mohon informasi lebih lanjut mengenai ketersediaan layanan. Terima kasih.`;
                     onChange={(date) => setFormData({ ...formData, tanggal: date })}
                     dateFormat="dd/MM/yyyy"
                     minDate={new Date()}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500"
+                    className="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                     placeholderText="Pilih tanggal"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition-colors duration-300"
+                  className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-gradient-to-r from-green-600 to-green-500 text-white rounded-lg font-medium hover:from-green-700 hover:to-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200 transform hover:scale-[1.02]"
                 >
                   Kirim Pesan WhatsApp
                 </button>

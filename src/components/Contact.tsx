@@ -47,17 +47,17 @@ ${formData.pesan}`;
           {/* Form Kontak */}
           <div className="lg:col-span-1">
             <div className="bg-white dark:bg-gray-900 rounded-lg shadow-lg p-8 transition transform hover:-translate-y-1 hover:shadow-2xl">
-              <h3 className="text-xl font-semibold mb-6 text-gray-900 dark:text-white">
+              <h3 className="text-xl font-semibold mb-6 bg-gradient-to-r from-green-600 to-green-400 bg-clip-text text-transparent">
                 Kirim Pesan
               </h3>
               <form onSubmit={handleSubmit}>
                 <div className="mb-4">
-                  <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
+                  <label className="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">
                     Nama
                   </label>
                   <input
                     type="text"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-green-500 transition"
+                    className="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                     placeholder="Nama Anda"
                     value={formData.nama}
                     onChange={(e) => setFormData({ ...formData, nama: e.target.value })}
@@ -65,12 +65,12 @@ ${formData.pesan}`;
                   />
                 </div>
                 <div className="mb-4">
-                  <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
+                  <label className="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">
                     Email
                   </label>
                   <input
                     type="email"
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-green-500 transition"
+                    className="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                     placeholder="email@example.com"
                     value={formData.email}
                     onChange={(e) => setFormData({ ...formData, email: e.target.value })}
@@ -78,11 +78,11 @@ ${formData.pesan}`;
                   />
                 </div>
                 <div className="mb-4">
-                  <label className="block text-gray-700 dark:text-gray-300 text-sm font-bold mb-2">
+                  <label className="block text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">
                     Pesan
                   </label>
                   <textarea
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:border-green-500 transition"
+                    className="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-800 dark:text-white focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200"
                     rows={4}
                     placeholder="Tulis pesan Anda"
                     value={formData.pesan}
@@ -92,7 +92,7 @@ ${formData.pesan}`;
                 </div>
                 <button
                   type="submit"
-                  className="w-full bg-green-600 hover:bg-green-700 text-white py-2 px-4 rounded-lg transition duration-300"
+                  className="w-full flex items-center justify-center gap-2 py-3 px-4 bg-gradient-to-r from-green-600 to-green-500 text-white rounded-lg font-medium hover:from-green-700 hover:to-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition-all duration-200 transform hover:scale-[1.02]"
                 >
                   Kirim Pesan
                 </button>
