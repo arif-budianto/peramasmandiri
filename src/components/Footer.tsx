@@ -153,7 +153,7 @@ const Footer = () => {
             <br />
             Created by{" "}
             <a
-              href="http://arif.peramasmandiri.net"
+              href="http://arifbudianto.peramasmandiri.net"
               target="_blank"
               rel="noopener noreferrer"
             >
