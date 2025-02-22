@@ -30,6 +30,16 @@
     - Pergantian otomatis setelah hari besar lewat
     - Transisi tahun otomatis
 
+[2025-02-23 02:20]
+- Implementasi kalender visual interaktif:
+  - Modal kalender dengan layout modern dan responsif
+  - Grid kalender untuk setiap bulan tahun berjalan
+  - Highlight otomatis untuk tanggal dengan hari besar
+  - Daftar detail hari besar per bulan
+  - Optimasi performa dengan React.memo dan useCallback
+  - Sistem scrolling yang lancar untuk navigasi kalender
+  - Penanganan event yang tepat untuk interaksi modal
+
 ## Next Steps
 1. Integrasi dengan API waktu sholat:
    - Penelitian API yang tersedia
@@ -44,7 +54,7 @@
 3. Peningkatan UX:
    - Animasi smooth untuk perubahan waktu
    - Notifikasi untuk waktu sholat
-   - Kalender visual untuk hari besar
+   - Filter hari besar berdasarkan kategori
    - Penyesuaian tema berdasarkan waktu
 
 4. Testing dan Optimisasi:
@@ -52,3 +62,4 @@
    - Performance testing untuk kalkulasi berkelanjutan
    - Cross-browser testing
    - Validasi akurasi perhitungan tanggal
+   - Optimasi render untuk modal kalender

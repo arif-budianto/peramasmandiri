@@ -84,9 +84,56 @@ Kebutuhan untuk sistem hari besar yang mencakup semua hari besar nasional dan da
   * Pembaruan state ketika hari besar berganti
   * Penambahan tahun pada nama hari besar
 
+## [2025-02-23] - Implementasi Modal Kalender Nasional
+
+**Context:**
+Kebutuhan untuk menampilkan kalender visual yang menunjukkan semua hari besar nasional dalam format yang mudah dibaca dan interaktif.
+
+**Decisions:**
+1. Arsitektur Komponen
+   - Memisahkan CalendarModal sebagai komponen terpisah dari Hero
+   - Menggunakan React.memo untuk mencegah render ulang yang tidak perlu
+   - Memindahkan fungsi helper ke level komponen untuk optimasi performa
+
+2. Layout dan Tampilan
+   - Grid 3 kolom untuk desktop, 1 kolom untuk mobile
+   - Tampilan kalender bulanan dengan grid 7 kolom untuk hari
+   - Highlight khusus untuk tanggal yang memiliki hari besar
+   - Daftar detail hari besar di bawah setiap kalender bulan
+
+3. Penanganan Modal dan Scrolling
+   - Menggunakan flex layout untuk struktur modal
+   - Area konten dengan overflow-y-auto untuk scrolling
+   - Event handling yang tepat untuk mencegah event bubbling
+   - Struktur fixed untuk modal dengan tinggi maksimum 90vh
+
+**Rationale:**
+- Pemisahan komponen meningkatkan maintainability dan performa
+- Grid layout memudahkan navigasi dan pembacaan kalender
+- Struktur flex dengan overflow yang tepat menyelesaikan masalah scrolling
+- Event handling yang proper mencegah interaksi yang tidak diinginkan
+
+**Implementation:**
+- Modal structure:
+  * Container utama dengan fixed positioning
+  * Header yang selalu visible
+  * Content area dengan scrolling independent
+  * Proper event delegation
+
+- Kalendar rendering:
+  * Perhitungan hari dalam bulan menggunakan date-fns
+  * Grid system untuk layout hari dan tanggal
+  * Styling khusus untuk tanggal dengan hari besar
+  * Daftar detail yang informatif
+
+- Optimasi performa:
+  * Memoization untuk fungsi-fungsi kalkulasi
+  * Lazy loading untuk modal content
+  * Proper cleanup pada unmount
+
 **Future Considerations:**
-1. Peningkatan akurasi perhitungan kalender lunar
-2. Penambahan kalender visual
-3. Sistem notifikasi untuk hari besar
-4. Penyimpanan preferensi pengguna untuk hari besar tertentu
-5. Integrasi dengan kalender sistem
+1. Penambahan animasi untuk transisi modal
+2. Filter hari besar berdasarkan kategori
+3. Opsi untuk ekspor kalender ke format lain
+4. Integrasi dengan kalender sistem
+5. Fitur pencarian hari besar
