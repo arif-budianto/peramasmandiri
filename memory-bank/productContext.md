@@ -1,57 +1,67 @@
-# Konteks Produk: Website BUMDesa Peramas Mandiri
+## Project Overview
+BUMDesa Peramas Mandiri Website
 
-**Gambaran Umum Proyek:**
+## Features
 
-Website BUMDesa Peramas Mandiri adalah platform digital yang bertujuan untuk:
-1. Memberikan informasi kepada masyarakat tentang program dan kegiatan BUMDesa
-2. Memudahkan akses masyarakat terhadap layanan BUMDesa
-3. Meningkatkan efisiensi komunikasi antara BUMDesa dan masyarakat
+### Hero Section
+1. Landing View
+   - Judul dan tagline
+   - Background image dengan overlay
+   - CTA button untuk layanan
 
-**Fitur Utama:**
+2. Timer System
+   - Timer Waktu Sholat
+     * Menampilkan countdown ke waktu sholat berikutnya
+     * Format waktu dalam bahasa Indonesia
+     * Auto-update setiap detik
+     * Transisi smooth antar perubahan waktu
+   
+   - Timer Hari Besar Islam
+     * Countdown menuju hari besar terdekat
+     * Format lengkap (hari, jam, menit, detik)
+     * Support untuk multiple hari besar
 
-1. Katalog Layanan:
-   - Menampilkan daftar layanan BUMDesa
-   - Form pemesanan layanan terintegrasi dengan WhatsApp
-   - Sistem pemilihan tanggal untuk penggunaan layanan
-   - Format pesan terstruktur untuk pemesanan
+3. Responsive Design
+   - Mobile-first approach
+   - Breakpoint optimization
+   - Dynamic layout adjustments
+   - Font scaling system
 
-2. Sistem Kontak:
-   - Form kontak dengan integrasi email langsung
-   - Validasi input untuk memastikan kualitas data
-   - Format pesan terstruktur untuk komunikasi yang efektif
-   - Multiple channel komunikasi (email, telepon, alamat)
+## Technical Stack
+- React with TypeScript
+- Tailwind CSS for styling
+- useState for state management
+- useEffect for timer logic
 
-3. Informasi dan Berita:
-   - Berita dan pengumuman terkini
-   - Galeri kegiatan
-   - Informasi kontak dan lokasi
+## Design System
+- Colors:
+  * Primary: Green (#10B981)
+  * Text: White
+  * Overlay: Black (50% opacity)
+  * Accent: Green gradient
 
-**Tujuan Teknis:**
-1. Membuat antarmuka yang responsif dan mudah digunakan
-2. Mengintegrasikan sistem komunikasi yang efektif
-3. Menyediakan informasi yang terstruktur dan mudah diakses
-4. Memastikan keamanan dan validasi data
+- Typography:
+  * Headings: 3xl to 6xl (responsive)
+  * Body: lg to 2xl (responsive)
+  * Timer: Custom mono font
 
-**File-file Memory Bank:**
+- Spacing:
+  * Consistent padding/margin system
+  * Responsive gaps
+  * Container max-width
 
-Direktori ini berisi file-file Memory Bank yang digunakan untuk menjaga konteks proyek dan melacak keputusan arsitektur.
+## Future Improvements
+1. Integration Points
+   - API waktu sholat
+   - Database hari besar Islam
+   - User location services
 
-- **activeContext.md:**  Melacak konteks sesi saat ini, tujuan, dan pertanyaan terbuka.
-- **productContext.md:**  Menyediakan gambaran tingkat tinggi tentang visi proyek, tujuan, dan batasan.
-- **progress.md:**  Mencatat pekerjaan yang telah diselesaikan dan menguraikan langkah selanjutnya untuk proyek.
-- **decisionLog.md:**  Mencatat keputusan arsitektur dan desain utama, beserta alasannya.
-- **systemPatterns.md:** Mendokumentasikan pola dan praktik terbaik yang berulang yang teridentifikasi dalam sistem.
+2. Enhanced Features
+   - Notifikasi waktu sholat
+   - Customizable hari besar
+   - Multiple timezone support
 
-File tambahan mungkin ditambahkan ke direktori ini sesuai kebutuhan untuk lebih mendokumentasikan arsitektur dan konteks proyek.
-
-**Teknologi Utama:**
-- React dengan TypeScript
-- Tailwind CSS untuk styling
-- React DatePicker untuk komponen kalender
-- Integrasi WhatsApp dan Email untuk komunikasi
-
-**Target Pengguna:**
-1. Masyarakat Desa Pangkalan Buton
-2. Calon pengguna layanan BUMDesa
-3. Pengurus dan staf BUMDesa
-4. Pemangku kepentingan terkait
+3. Performance Optimization
+   - Caching sistem waktu sholat
+   - Lazy loading komponen
+   - Image optimization

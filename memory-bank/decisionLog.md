@@ -1,75 +1,45 @@
-# Log Keputusan Arsitektur
+## [2025-02-22] - Implementasi Timer pada Hero Section
 
-## 21 Februari 2025 - Optimisasi Layout Mobile Halaman Semua Berita
+**Context:**
+Kebutuhan untuk menampilkan dua timer di hero section website:
+1. Timer untuk waktu sholat berikutnya
+2. Timer untuk countdown menuju hari besar Islam
 
-**Konteks:** Layout halaman Semua Berita pada tampilan mobile memiliki masalah spacing antara tombol Kembali ke Beranda dan judul halaman yang terlalu rapat.
+**Decisions:**
+1. Layout dan Desain
+   - Menggunakan grid system 2 kolom untuk desktop dan 1 kolom untuk mobile
+   - Implementasi backdrop blur dengan transparansi untuk estetika modern
+   - Penggunaan warna hijau sesuai tema website
 
-**Keputusan:** Mengimplementasikan layout responsif dengan pemisahan yang jelas antara navigasi dan judul.
+2. Teknis Timer
+   - Menggunakan state management dengan useState untuk tracking waktu
+   - Implementasi interval 1 detik untuk update waktu real-time
+   - Format waktu dalam bahasa Indonesia (j untuk jam, m untuk menit, d untuk detik)
 
-**Rasional:**
-- Penempatan judul di tengah memberikan hierarki visual yang lebih baik
-- Pemisahan tombol navigasi dan judul meningkatkan readability
-- Layout responsif yang adaptif untuk berbagai ukuran layar
-- Mempertahankan konsistensi dengan gaya desain website
+3. Responsive Design
+   - Menggunakan flexbox untuk positioning yang dinamis
+   - Pengaturan font size yang responsif dengan breakpoint mobile dan desktop
+   - Optimasi spacing untuk mencegah overlap konten
 
-**Implementasi:**
-- Penggunaan flex-col pada mobile dan flex-row pada desktop
-- Text-center untuk judul dengan mx-auto pada mobile
-- Pemeliharaan posisi tombol navigasi di kiri
-- Gap yang optimal (gap-4) antara elemen
-- Penyesuaian ukuran font untuk readability (text-2xl pada mobile, text-3xl pada desktop)
+**Rationale:**
+- Pemilihan layout grid memungkinkan penempatan timer yang seimbang dan rapi
+- Penggunaan backdrop blur memberikan kesan modern dan tetap menjaga keterbacaan
+- Format waktu dalam bahasa Indonesia untuk konsistensi dengan target pengguna
+- Responsive design memastikan pengalaman pengguna yang baik di semua perangkat
 
-## 21 Februari 2025 - Standarisasi UI Form Components
+**Implementation:**
+- Timer waktu sholat:
+  * Perhitungan otomatis waktu sholat berikutnya
+  * Update countdown setiap detik
+  * Handling pergantian hari
 
-**Konteks:** Perlu menjaga konsistensi visual dan meningkatkan profesionalitas tampilan form di seluruh aplikasi.
+- Timer hari besar:
+  * Countdown menuju Idul Fitri 2025
+  * Format menampilkan hari, jam, menit, dan detik
+  * Error handling untuk tanggal yang sudah lewat
 
-**Keputusan:** Mengimplementasikan sistem styling yang seragam untuk semua form komponen.
-
-**Rasional:**
-- Konsistensi visual meningkatkan user experience
-- Penggunaan gradient dan efek modern membuat tampilan lebih profesional
-- Dark mode support yang lebih baik untuk aksesibilitas
-- Feedback visual yang jelas melalui efek hover dan focus
-
-**Implementasi:**
-- Gradient text untuk heading (from-green-600 to-green-400)
-- Styling input yang konsisten dengan padding dan border yang seragam
-- Implementasi backdrop-blur pada modal
-- Button dengan gradient dan efek transform pada hover
-- Peningkatan dukungan dark mode pada semua elemen
-
-## 21 Februari 2025 - Implementasi Form Pemesanan Layanan
-
-**Konteks:** Perlu mengimplementasikan sistem pemesanan yang mudah digunakan dan efektif untuk menghubungkan pelanggan dengan layanan BUMDesa.
-
-**Keputusan:** Mengimplementasikan modal form dengan integrasi WhatsApp untuk pemesanan layanan.
-
-**Rasional:** 
-- WhatsApp adalah platform komunikasi yang umum digunakan di Indonesia
-- Modal form memberikan pengalaman pengguna yang lebih baik daripada redirect langsung
-- Pengumpulan informasi terstruktur sebelum mengirim pesan ke WhatsApp
-- DatePicker memudahkan pemilihan tanggal dengan format yang konsisten
-
-**Implementasi:**
-- Menggunakan React state untuk manajemen modal dan form data
-- Implementasi react-datepicker untuk pemilihan tanggal
-- Format pesan WhatsApp yang terstruktur dengan data form
-- Validasi form untuk memastikan kelengkapan data
-
-## 21 Februari 2025 - Sistem Pengiriman Pesan Kontak
-
-**Konteks:** Perlu menyediakan cara yang mudah bagi pengunjung website untuk menghubungi BUMDesa melalui email.
-
-**Keputusan:** Menggunakan mailto link dengan format email terstruktur untuk pengiriman pesan.
-
-**Rasional:**
-- Mailto link bekerja dengan aplikasi email default pengguna
-- Tidak memerlukan backend atau konfigurasi server email
-- Format email terstruktur memudahkan pengelolaan pesan
-- Solusi sederhana namun efektif untuk kebutuhan kontak
-
-**Implementasi:**
-- Form validasi dengan required fields
-- Format subject dan body email yang terstruktur
-- Reset form setelah pengiriman
-- Integrasi langsung dengan email BUMDesa (peramasmandiri@gmail.com)
+**Future Considerations:**
+1. Integrasi dengan API waktu sholat untuk akurasi lebih baik
+2. Penambahan lebih banyak hari besar Islam
+3. Sistem notifikasi saat waktu sholat tiba
+4. Penyesuaian timezone berdasarkan lokasi pengguna
