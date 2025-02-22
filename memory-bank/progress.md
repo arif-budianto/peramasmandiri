@@ -12,23 +12,43 @@
   - Penempatan konten yang lebih baik untuk menghindari overlap
   - Implementasi grid system yang responsif
 
+[2025-02-23]
+- Pengembangan sistem hari besar nasional komprehensif:
+  - Implementasi daftar lengkap hari besar nasional:
+    - Hari raya Islam (Isra Miraj, Ramadhan, Idul Fitri, Idul Adha, dll)
+    - Hari raya Hindu (Galungan, Kuningan, Nyepi)
+    - Hari raya Buddha (Waisak)
+    - Hari raya Kristen (Natal)
+    - Hari raya lainnya (Imlek)
+    - Hari nasional (Tahun Baru, Kemerdekaan, Hari Buruh)
+  - Implementasi sistem perhitungan otomatis:
+    - Kalkulasi tanggal tetap untuk tahun-tahun mendatang
+    - Perhitungan pergeseran kalender Hijriah (11 hari/tahun)
+    - Perhitungan pergeseran kalender lunar lainnya (10 hari/tahun)
+  - Sistem pergantian otomatis antar hari besar:
+    - Deteksi hari besar terdekat
+    - Pergantian otomatis setelah hari besar lewat
+    - Transisi tahun otomatis
+
 ## Next Steps
 1. Integrasi dengan API waktu sholat:
    - Penelitian API yang tersedia
    - Implementasi fetch data dari API
    - Penyesuaian perhitungan berdasarkan lokasi
 
-2. Pengembangan fitur hari besar:
-   - Penambahan lebih banyak hari besar Islam
-   - Sistem manajemen untuk mengupdate tanggal
-   - Penyimpanan data di database
+2. Peningkatan akurasi perhitungan:
+   - Optimalisasi perhitungan kalender lunar
+   - Validasi dengan sumber resmi
+   - Penyesuaian berdasarkan lokasi geografis
 
 3. Peningkatan UX:
    - Animasi smooth untuk perubahan waktu
    - Notifikasi untuk waktu sholat
+   - Kalender visual untuk hari besar
    - Penyesuaian tema berdasarkan waktu
 
 4. Testing dan Optimisasi:
-   - Unit testing untuk logika timer
-   - Performance testing
+   - Unit testing untuk logika timer dan perhitungan tanggal
+   - Performance testing untuk kalkulasi berkelanjutan
    - Cross-browser testing
+   - Validasi akurasi perhitungan tanggal

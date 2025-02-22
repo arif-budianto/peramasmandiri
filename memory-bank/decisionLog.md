@@ -38,8 +38,55 @@ Kebutuhan untuk menampilkan dua timer di hero section website:
   * Format menampilkan hari, jam, menit, dan detik
   * Error handling untuk tanggal yang sudah lewat
 
+## [2025-02-23] - Sistem Hari Besar Nasional Komprehensif
+
+**Context:**
+Kebutuhan untuk sistem hari besar yang mencakup semua hari besar nasional dan dapat memperbarui diri secara otomatis setiap tahun.
+
+**Decisions:**
+1. Data dan Kategorisasi
+   - Pembagian hari besar menjadi tiga kategori:
+     * Tanggal tetap (Tahun Baru, Natal, Kemerdekaan, dll)
+     * Kalender Hijriah (hari raya Islam)
+     * Kalender lunar lainnya (Imlek, Nyepi, Waisak, dll)
+   - Penggunaan tahun 2025 sebagai tahun dasar untuk perhitungan
+
+2. Sistem Perhitungan Otomatis
+   - Tanggal tetap: menggunakan tanggal yang sama setiap tahun
+   - Kalender Hijriah: pergeseran 11 hari lebih awal per tahun
+   - Kalender lunar lainnya: pergeseran 10 hari lebih awal per tahun
+   - Implementasi fungsi perhitungan yang dapat digunakan untuk tahun berapa saja
+
+3. Mekanisme Pergantian Otomatis
+   - Penggunaan array terurut berdasarkan tanggal
+   - Pencarian hari besar terdekat yang belum lewat
+   - Pergantian otomatis ke tahun berikutnya jika semua hari besar telah lewat
+
+**Rationale:**
+- Pembagian kategori memudahkan maintenance dan perhitungan
+- Penggunaan tahun dasar 2025 karena data tersedia dan terkonfirmasi
+- Pemilihan rata-rata pergeseran berdasarkan observasi historis
+- Sistem pergantian otomatis menghilangkan kebutuhan update manual
+
+**Implementation:**
+- Struktur data:
+  * Interface dan type yang jelas untuk type safety
+  * Array terpisah untuk setiap kategori hari besar
+  * Fungsi helper untuk perhitungan tanggal
+
+- Sistem perhitungan:
+  * Fungsi getHariBesarTahunan untuk menghitung semua tanggal
+  * Fungsi getHariBesarBerikutnya untuk mencari hari besar terdekat
+  * Format tanggal ISO untuk konsistensi
+
+- Pergantian otomatis:
+  * Pengecekan tanggal setiap detik
+  * Pembaruan state ketika hari besar berganti
+  * Penambahan tahun pada nama hari besar
+
 **Future Considerations:**
-1. Integrasi dengan API waktu sholat untuk akurasi lebih baik
-2. Penambahan lebih banyak hari besar Islam
-3. Sistem notifikasi saat waktu sholat tiba
-4. Penyesuaian timezone berdasarkan lokasi pengguna
+1. Peningkatan akurasi perhitungan kalender lunar
+2. Penambahan kalender visual
+3. Sistem notifikasi untuk hari besar
+4. Penyimpanan preferensi pengguna untuk hari besar tertentu
+5. Integrasi dengan kalender sistem

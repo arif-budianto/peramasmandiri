@@ -11,6 +11,19 @@ interface HariBesar {
   countdown: string;
 }
 
+interface HariBesarTetap {
+  nama: string;
+  bulan: number;
+  tanggal: number;
+}
+
+interface HariBesarData {
+  nama: string;
+  tanggal: string;
+}
+
+type HariBesarList = HariBesarData[];
+
 // Jadwal waktu sholat (WIB)
 const jadwalSholat = {
   subuh: { nama: 'Subuh', jam: 4, menit: 45 },
@@ -18,6 +31,111 @@ const jadwalSholat = {
   ashar: { nama: 'Ashar', jam: 15, menit: 30 },
   maghrib: { nama: 'Maghrib', jam: 18, menit: 30 },
   isya: { nama: 'Isya', jam: 19, menit: 45 }
+};
+
+// Fungsi untuk menghitung tanggal hari besar berdasarkan tahun
+const getHariBesarTahunan = (tahun: number) => {
+  // Data dasar 2025
+  const baseYear = 2025;
+  
+  // Hari raya dengan tanggal tetap
+  const tanggalTetap: HariBesarTetap[] = [
+    { nama: 'Tahun Baru', bulan: 1, tanggal: 1 },
+    { nama: 'Hari Raya Natal', bulan: 12, tanggal: 25 },
+    { nama: 'Hari Kemerdekaan', bulan: 8, tanggal: 17 },
+    { nama: 'Hari Buruh', bulan: 5, tanggal: 1 }
+  ];
+
+  // Hari raya Islam 2025 sebagai basis
+  const islamicHolidays2025: HariBesarData[] = [
+    { nama: 'Isra Miraj', tanggal: '2025-01-27' },
+    { nama: 'Malam Nisfu Syaban', tanggal: '2025-02-14' },
+    { nama: 'Awal Ramadhan', tanggal: '2025-03-01' },
+    { nama: 'Idul Fitri', tanggal: '2025-03-31' },
+    { nama: 'Idul Adha', tanggal: '2025-06-06' },
+    { nama: 'Tahun Baru Islam', tanggal: '2025-06-27' },
+    { nama: 'Maulid Nabi', tanggal: '2025-09-05' }
+  ];
+
+  // Hari raya lainnya 2025 sebagai basis
+  const otherHolidays2025: HariBesarData[] = [
+    { nama: 'Tahun Baru Imlek', tanggal: '2025-01-29' },
+    { nama: 'Hari Raya Nyepi', tanggal: '2025-03-29' },
+    { nama: 'Hari Raya Waisak', tanggal: '2025-05-13' },
+    { nama: 'Hari Raya Galungan', tanggal: '2025-04-16' },
+    { nama: 'Hari Raya Kuningan', tanggal: '2025-04-26' }
+  ];
+
+  const hariBesar: HariBesarList = [];
+
+  // Tambahkan hari raya dengan tanggal tetap
+  tanggalTetap.forEach(hari => {
+    hariBesar.push({
+      nama: hari.nama,
+      tanggal: `${tahun}-${String(hari.bulan).padStart(2, '0')}-${String(hari.tanggal).padStart(2, '0')}`
+    });
+  });
+
+  // Hitung hari raya Islam untuk tahun yang diminta
+  // Rata-rata tahun Hijriah bergeser 11 hari lebih awal di kalender Masehi
+  if (tahun > baseYear) {
+    const yearDiff = tahun - baseYear;
+    islamicHolidays2025.forEach(hari => {
+      const date = new Date(hari.tanggal);
+      date.setDate(date.getDate() - (yearDiff * 11));
+      hariBesar.push({
+        nama: hari.nama,
+        tanggal: date.toISOString().split('T')[0]
+      });
+    });
+  } else if (tahun < baseYear) {
+    const yearDiff = baseYear - tahun;
+    islamicHolidays2025.forEach(hari => {
+      const date = new Date(hari.tanggal);
+      date.setDate(date.getDate() + (yearDiff * 11));
+      hariBesar.push({
+        nama: hari.nama,
+        tanggal: date.toISOString().split('T')[0]
+      });
+    });
+  } else {
+    islamicHolidays2025.forEach(hari => {
+      hariBesar.push({
+        nama: hari.nama,
+        tanggal: hari.tanggal
+      });
+    });
+  }
+
+  // Hitung hari raya lainnya untuk tahun yang diminta
+  // Rata-rata kalender lunar bergeser sekitar 10 hari per tahun
+  if (tahun > baseYear) {
+    const yearDiff = tahun - baseYear;
+    otherHolidays2025.forEach(hari => {
+      const date = new Date(hari.tanggal);
+      date.setDate(date.getDate() - (yearDiff * 10));
+      hariBesar.push({
+        nama: hari.nama,
+        tanggal: date.toISOString().split('T')[0]
+      });
+    });
+  } else if (tahun < baseYear) {
+    const yearDiff = baseYear - tahun;
+    otherHolidays2025.forEach(hari => {
+      const date = new Date(hari.tanggal);
+      date.setDate(date.getDate() + (yearDiff * 10));
+      hariBesar.push({
+        nama: hari.nama,
+        tanggal: date.toISOString().split('T')[0]
+      });
+    });
+  } else {
+    otherHolidays2025.forEach(hari => {
+      hariBesar.push({ ...hari });
+    });
+  }
+
+  return hariBesar.sort((a, b) => new Date(a.tanggal).getTime() - new Date(b.tanggal).getTime());
 };
 
 const getWaktuSholatBerikutnya = () => {
@@ -67,6 +185,33 @@ const formatCountdown = (diff: number): string => {
   return `${hours}j ${minutes}m ${seconds}d`;
 };
 
+const getHariBesarBerikutnya = () => {
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  
+  // Dapatkan daftar hari besar untuk tahun ini
+  let hariBesarList = getHariBesarTahunan(currentYear);
+  
+  // Cari hari besar berikutnya di tahun ini
+  const hariBesarBerikutnya = hariBesarList.find(hari => {
+    const tanggal = new Date(hari.tanggal);
+    return tanggal.getTime() > now.getTime();
+  });
+
+  // Jika tidak ada hari besar tersisa di tahun ini
+  // ambil hari besar pertama tahun depan
+  if (!hariBesarBerikutnya) {
+    const nextYearHolidays = getHariBesarTahunan(currentYear + 1);
+    return nextYearHolidays[0];
+  }
+
+  // Format nama hari besar dengan tahun
+  return {
+    ...hariBesarBerikutnya,
+    nama: `${hariBesarBerikutnya.nama} ${new Date(hariBesarBerikutnya.tanggal).getFullYear()}`
+  };
+};
+
 const Hero = () => {
   const [waktuSholat, setWaktuSholat] = useState<WaktuSholat>({
     nama: 'Loading...',
@@ -74,8 +219,8 @@ const Hero = () => {
   });
 
   const [hariBesar, setHariBesar] = useState<HariBesar>({
-    nama: 'Idul Fitri',
-    tanggal: '2025-04-03',
+    nama: 'Loading...',
+    tanggal: '',
     countdown: '00:00:00'
   });
 
@@ -118,8 +263,9 @@ const Hero = () => {
 
   const updateHariBesar = () => {
     try {
+      const nextHariBesar = getHariBesarBerikutnya();
       const now = new Date();
-      const target = new Date(hariBesar.tanggal);
+      const target = new Date(nextHariBesar.tanggal);
       const diff = target.getTime() - now.getTime();
 
       if (diff < 0) {
@@ -131,10 +277,11 @@ const Hero = () => {
       const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-      setHariBesar(prev => ({
-        ...prev,
+      setHariBesar({
+        nama: nextHariBesar.nama,
+        tanggal: nextHariBesar.tanggal,
         countdown: `${days}h ${hours}j ${minutes}m ${seconds}d`
-      }));
+      });
     } catch (error) {
       console.error('Error updating hari besar:', error);
       setHariBesar(prev => ({
@@ -195,7 +342,7 @@ const Hero = () => {
                 <div className="max-w-4xl mx-auto">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <TimerCard title="Menuju Waktu Sholat" name={waktuSholat.nama} time={waktuSholat.countdown} />
-                    <TimerCard title="Menuju Hari Besar Islam" name={hariBesar.nama} time={hariBesar.countdown} />
+                    <TimerCard title="Menuju Hari Besar" name={hariBesar.nama} time={hariBesar.countdown} />
                   </div>
                 </div>
               </div>
