@@ -19,11 +19,24 @@ interface BeritaFormProps {
 }
 
 const BeritaForm = ({ isOpen, onClose, beritaToEdit }: BeritaFormProps) => {
+  const stripHtmlTags = (html: string) => {
+    // Ganti tag <p> dengan newline
+    let text = html.replace(/<p>/g, '').replace(/<\/p>/g, '\n');
+    // Hilangkan tag HTML lainnya jika ada
+    text = text.replace(/<[^>]*>/g, '');
+    // Hilangkan newline berlebih
+    text = text.replace(/\n\s*\n/g, '\n');
+    // Trim whitespace
+    return text.trim();
+  };
+
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     judul: beritaToEdit?.judul || "",
     ringkasan: beritaToEdit?.ringkasan || "",
-    isi: beritaToEdit?.isi || "",
+    isi: beritaToEdit?.isi 
+      ? stripHtmlTags(beritaToEdit.isi)
+      : "",
     kategori: beritaToEdit?.kategori || "berita",
     gambar: beritaToEdit?.gambar || "",
   });

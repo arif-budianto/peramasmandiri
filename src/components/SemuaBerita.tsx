@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Calendar, ArrowLeft, Edit, Trash2, ArrowRight } from 'lucide-react';
+import BeritaForm from './BeritaForm';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
 import toast from 'react-hot-toast';
@@ -19,6 +20,8 @@ const SemuaBerita = () => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [berita, setBerita] = useState<BeritaProps[]>([]);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [selectedBerita, setSelectedBerita] = useState<BeritaProps | null>(null);
   const [loading, setLoading] = useState(true);
 
   const fetchBerita = async () => {
@@ -71,6 +74,17 @@ const SemuaBerita = () => {
     }
   };
 
+  const handleEdit = (berita: BeritaProps) => {
+    setSelectedBerita(berita);
+    setIsEditModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsEditModalOpen(false);
+    setSelectedBerita(null);
+    fetchBerita();
+  };
+
   return (
     <div className="min-h-screen bg-white dark:bg-gray-800 py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -114,12 +128,12 @@ const SemuaBerita = () => {
                   />
                   {user && (
                     <div className="absolute top-4 left-4 flex space-x-2">
-                      <Link
-                        to={`/edit-berita/${item.id}`}
+                      <button
+                        onClick={() => handleEdit(item)}
                         className="p-2 bg-blue-600 text-white rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
                       >
                         <Edit className="h-4 w-4" />
-                      </Link>
+                      </button>
                       <button
                         onClick={() => handleDelete(item.id)}
                         className="p-2 bg-red-600 text-white rounded-full hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
@@ -168,6 +182,13 @@ const SemuaBerita = () => {
           </div>
         )}
       </div>
+      {isEditModalOpen && selectedBerita && (
+        <BeritaForm
+          isOpen={isEditModalOpen}
+          onClose={handleCloseModal}
+          beritaToEdit={selectedBerita}
+        />
+      )}
     </div>
   );
 };
