@@ -42,7 +42,6 @@ const BeritaPengumuman = () => {
 
   const fetchBerita = async () => {
     try {
-      console.log('Mulai fetch berita...'); // Debug log
       setLoading(true);
       
       const { data, error } = await supabase
@@ -50,36 +49,28 @@ const BeritaPengumuman = () => {
         .select('*')
         .order('created_at', { ascending: false });
 
-      console.log('Raw data from Supabase:', data); // Debug log
-
       if (error) {
-        console.error('Error fetching berita:', error);
         throw error;
       }
 
       if (data && Array.isArray(data)) {
         // Map data to match BeritaProps interface
-        const mappedData = data.map(item => {
-          console.log('Processing item:', item); // Debug log
-          return {
-            id: item.id,
-            judul: item.judul || '',
-            tanggal: item.created_at || new Date().toISOString(),
-            ringkasan: item.ringkasan || '',
-            gambar: item.gambar || 'https://peramasmandiri.net/Logo%20Bumdes%203.png',
-            kategori: item.kategori || 'berita',
-            isi: item.isi || '',
-            slug: item.slug || generateSlug(item.judul, item.id)
-          };
-        });
-        console.log('Mapped data:', mappedData); // Debug log
+        const mappedData = data.map(item => ({
+          id: item.id,
+          judul: item.judul || '',
+          tanggal: item.created_at || new Date().toISOString(),
+          ringkasan: item.ringkasan || '',
+          gambar: item.gambar || 'https://peramasmandiri.net/Logo%20Bumdes%203.png',
+          kategori: item.kategori || 'berita',
+          isi: item.isi || '',
+          slug: item.slug || generateSlug(item.judul, item.id)
+        }));
+
         setBerita(mappedData);
       } else {
-        console.log('No data or invalid data structure received'); // Debug log
         setBerita([]);
       }
     } catch (error: any) {
-      console.error('Error detail:', error);
       toast.error('Gagal memuat berita: ' + error.message);
     } finally {
       setLoading(false);
@@ -87,14 +78,11 @@ const BeritaPengumuman = () => {
   };
 
   useEffect(() => {
-    console.log('BeritaPengumuman component mounted'); // Debug log
     fetchBerita();
   }, []);
 
-  // Tambahkan effect untuk memantau perubahan isFormOpen
   useEffect(() => {
     if (!isFormOpen) {
-      console.log('Form closed, fetching new data...'); // Debug log
       fetchBerita();
     }
   }, [isFormOpen]);
@@ -126,10 +114,10 @@ const BeritaPengumuman = () => {
     setBeritaToEdit(undefined);
     fetchBerita();
   };
+
   const navigate = useNavigate();
   const handleButtonClick = () => {
     navigate('/semua-berita');
-    // Scroll ke atas halaman
     window.scrollTo({
       top: 0,
       behavior: 'smooth'
@@ -256,7 +244,6 @@ const BeritaPengumuman = () => {
             </button>
           </div>
         )}
-
 
         {isFormOpen && (
           <BeritaForm

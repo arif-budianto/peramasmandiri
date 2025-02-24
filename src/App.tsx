@@ -13,7 +13,7 @@ import { Analytics } from "@vercel/analytics/react";
 
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider } from './contexts/AuthContext';
-
+import { HelmetProvider } from 'react-helmet-async';
 
 
 const HomePage = () => (
@@ -30,23 +30,25 @@ const HomePage = () => (
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <div className="min-h-screen bg-white dark:bg-gray-900">
-          <Navbar />
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/profil" element={<ManajemenProfil />} />
-            <Route path="/katalog" element={<KatalogLayanan />} />
+      <HelmetProvider>
+        <Router>
+          <div className="min-h-screen bg-white dark:bg-gray-900">
+            <Navbar />
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/profil" element={<ManajemenProfil />} />
+              <Route path="/katalog" element={<KatalogLayanan />} />
 
-            <Route path="/pengumuman/:slug" element={<BeritaDetail />} />
-            <Route path="/berita/:slug" element={<BeritaDetail />} />
-            <Route path="/semua-berita" element={<SemuaBerita />} />
-          </Routes>
-          <Footer />
-          <Analytics />
-          <Toaster position="top-right" />
-        </div>
-      </Router>
+              <Route path="/pengumuman/:slug" element={<BeritaDetail />} />
+              <Route path="/berita/:slug" element={<BeritaDetail />} />
+              <Route path="/semua-berita" element={<SemuaBerita />} />
+            </Routes>
+            <Footer />
+            <Analytics />
+            <Toaster position="top-right" />
+          </div>
+        </Router>
+      </HelmetProvider>
     </AuthProvider>
   );
 }

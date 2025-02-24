@@ -20,13 +20,9 @@ interface BeritaFormProps {
 
 const BeritaForm = ({ isOpen, onClose, beritaToEdit }: BeritaFormProps) => {
   const stripHtmlTags = (html: string) => {
-    // Ganti tag <p> dengan newline
     let text = html.replace(/<p>/g, '').replace(/<\/p>/g, '\n');
-    // Hilangkan tag HTML lainnya jika ada
     text = text.replace(/<[^>]*>/g, '');
-    // Hilangkan newline berlebih
     text = text.replace(/\n\s*\n/g, '\n');
-    // Trim whitespace
     return text.trim();
   };
 
@@ -44,14 +40,13 @@ const BeritaForm = ({ isOpen, onClose, beritaToEdit }: BeritaFormProps) => {
   const generateSlug = (text: string, id?: string) => {
     const baseSlug = text
       .toLowerCase()
-      .replace(/[^a-z0-9\s-]/g, "") // Hapus karakter spesial kecuali huruf, angka, spasi, dan tanda hubung
-      .replace(/\s+/g, "-") // Ganti spasi dengan tanda hubung
-      .replace(/-+/g, "-") // Hapus tanda hubung berlebih
-      .replace(/^-+/, "") // Hapus tanda hubung di awal
-      .replace(/-+$/, "") // Hapus tanda hubung di akhir
-      .trim(); // Hapus spasi di awal dan akhir
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-")
+      .replace(/^-+/, "")
+      .replace(/-+$/, "")
+      .trim();
 
-    // Jika ada ID, gunakan itu sebagai suffix, jika tidak gunakan timestamp
     const suffix = id || Date.now().toString();
     return `${baseSlug}-${suffix}`;
   };
@@ -80,15 +75,11 @@ const BeritaForm = ({ isOpen, onClose, beritaToEdit }: BeritaFormProps) => {
           data: { publicUrl },
         } = supabase.storage.from("media").getPublicUrl(filePath);
 
-        // Pastikan URL gambar adalah URL absolut
         gambarUrl = publicUrl.startsWith("http")
           ? publicUrl
           : `https://peramasmandiri.net${publicUrl}`;
       }
 
-      console.log("Submitting form data:", formData); // Debug log
-
-      // Validasi data sebelum dikirim
       if (!formData.judul.trim()) {
         throw new Error("Judul harus diisi");
       }
@@ -107,48 +98,32 @@ const BeritaForm = ({ isOpen, onClose, beritaToEdit }: BeritaFormProps) => {
         gambar: gambarUrl || "https://peramasmandiri.net/Logo%20Bumdes%203.png",
         updated_at: now,
         slug:
-          beritaToEdit?.slug || generateSlug(formData.judul, beritaToEdit?.id), // Gunakan slug yang ada jika mengedit, atau buat baru dengan ID jika ada
+          beritaToEdit?.slug || generateSlug(formData.judul, beritaToEdit?.id),
       };
 
-      // Hanya tambahkan created_at untuk data baru
       if (!beritaToEdit) {
         beritaData.created_at = now;
       }
 
-      console.log("Prepared data for Supabase:", beritaData); // Debug log
-
-      console.log("Sending data to Supabase:", beritaData);
-
-      const { data, error } = beritaToEdit
+      const { error } = beritaToEdit
         ? await supabase
             .from("berita")
             .update(beritaData)
             .eq("id", beritaToEdit.id)
-            .select()
+            .single()
         : await supabase.from("berita").insert([beritaData]).select();
 
       if (error) {
-        console.error("Supabase error:", error);
         throw error;
       }
 
-      console.log("Supabase response data:", data); // Debug log
-
-      if (error) {
-        console.error("Error saving berita:", error); // Untuk debugging
-        throw error;
-      }
-
-      console.log("Saved data:", data); // Untuk debugging
       toast.success(
         beritaToEdit
           ? "Berita berhasil diperbarui!"
           : "Berita berhasil ditambahkan!"
       );
       onClose();
-      window.location.reload(); // Refresh halaman untuk memuat data terbaru
-
-      onClose();
+      window.location.reload();
     } catch (error: any) {
       toast.error(error.message || "Terjadi kesalahan");
     } finally {
